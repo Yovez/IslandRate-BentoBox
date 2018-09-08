@@ -1,0 +1,121 @@
+change-rating: true
+disable-command-rating: false
+max-command-rating: 5
+min-island-level: 0
+send-owner-message: false
+cooldown: 60
+menu:
+  enabled: false
+  custom: false
+  title: '&6&lRate &e%target%''s &6&lIsland &4(%target-stars%)'
+  size: 9
+  items:
+    skull:
+      slot: 0
+      amount: 1
+      display_name: '&r&c%target%'
+      lore:
+      - '&4Total Ratings: &c%target-stars%'
+    help:
+      slot: 2
+      material: BOOK
+      amount: 1
+      display_name: '&2Rating Info'
+      lore:
+      - '&aRate the island'
+      - '&aChoose your rating 1-5'
+    rating-1:
+      rating: 1
+      slot: 4
+      material: EMERALD
+      amount: 1
+      display_name: '&41 &f= &4Terrible'
+      lore: []
+    rating-2:
+      rating: 2
+      slot: 5
+      material: EMERALD
+      amount: 2
+      display_name: '&c2 &f= &cPoor'
+      lore: []
+    rating-3:
+      rating: 3
+      slot: 6
+      material: EMERALD
+      amount: 3
+      display_name: '&e3 &f= &eOkay'
+      lore: []
+    rating-4:
+      rating: 4
+      slot: 7
+      material: EMERALD
+      amount: 4
+      display_name: '&a4 &f= &aGood'
+      lore: []
+    rating-5:
+      rating: 5
+      slot: 8
+      material: EMERALD
+      amount: 5
+      display_name: '&25 &f= &2Great'
+      lore: []
+island_menu:
+  enabled: false
+  custom: false
+  title: '&9IslandRate Menu'
+  items:
+    skull:
+      slot: 0
+      amount: 1
+      display_name: '&a%player%'
+      lore:
+      - '&6Total Ratings: &e%player-stars%'
+    opt-out:
+      slot: 2
+      material: BARRIER
+      amount: 1
+      display_name: '&bToggle Opted-Out'
+      lore:
+      - '&6&lOpted-Out&7: &e%opted-out-player%'
+top_menu:
+  enabled: false
+  teleport: false
+  title: '&6&lTop Rated Islands'
+  items:
+    skull:
+      display_name: '&a#%top-place% &r&f%target%'
+      lore:
+      - '&6Total Ratings: &e%target-stars%'
+infinite_top_menu:
+  enabled: false
+  teleport: false
+  title: '&6&lTop Rated Islands (Categorized)'
+  items:
+    skull:
+      display_name: '&a#%top-place% &r&f%target%'
+      lore:
+      - '&6Total Ratings: &e%target-stars%'
+storage:
+  type: SQLITE
+  version: 1
+  mysql:
+    host: localhost
+    port: '3306'
+    database: minecraft
+    username: root
+    password: password
+sign:
+  open-rate-menu:
+    line-1: '&bOpen Rate Menu'
+  open-top-menu:
+    line-1: '&bOpen Top Ten'
+  show-top-list:
+    line-1: '&bList Top Ten'
+  rate-island:
+    line-1: '&bRate'
+    line-2: '%target%''s'
+    line-3: '&bIsland'
+  no-island-found:
+    line-1: '&cNo'
+    line-2: '&cIsland'
+    line-3: '&cFound'
