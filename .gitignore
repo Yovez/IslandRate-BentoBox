@@ -6,3 +6,6 @@
 .idea/workspace.xml
 *.class
 .project
+.settings/org.eclipse.buildship.core.prefs
+.settings/
+.gradle/
