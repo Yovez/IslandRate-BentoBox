@@ -185,6 +185,8 @@ public class MySQL {
 
 	public Connection getConnection() {
 		try {
+			if (connection != null && !connection.isClosed())
+				connection.close();
 			openConnection(storageType);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
