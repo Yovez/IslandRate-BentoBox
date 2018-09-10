@@ -155,15 +155,23 @@ public class IslandRateAPI {
 	public double getAverageRating(OfflinePlayer p) {
 		if (p == null)
 			return 0.0;
-		if (getTotalNumOfVoters(p) == 0)
+		if (getTotalNumOfRaters(p) == 0)
 			return getTotalRatings(p);
-		return (double) (getTotalRatings(p) / getTotalNumOfVoters(p));
+		return (double) (getTotalRatings(p) / getTotalNumOfRaters(p));
 	}
 
-	public int getTotalNumOfVoters(OfflinePlayer p) {
+	/**
+	 * Get the total number of raters of a specific player
+	 * 
+	 * @param p the player to get total raters of
+	 * @return the total number of the raters
+	 * @since 1.3.3.5
+	 */
+
+	public int getTotalNumOfRaters(OfflinePlayer p) {
 		if (p == null)
 			return 0;
-		int voters = 0;
+		int raters = 0;
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -173,7 +181,7 @@ public class IslandRateAPI {
 			ps.setString(1, p.getUniqueId().toString());
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				voters++;
+				raters++;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -186,7 +194,7 @@ public class IslandRateAPI {
 				e.printStackTrace();
 			}
 		}
-		return voters;
+		return raters;
 	}
 
 	/**

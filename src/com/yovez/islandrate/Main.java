@@ -83,7 +83,7 @@ public class Main extends JavaPlugin {
 			if (msg.contains("%player-average%"))
 				msg = msg.replaceAll("%player-average%", String.valueOf(getAPI().getAverageRating(p)));
 			if (msg.contains("%player-total-voters%"))
-				msg = msg.replaceAll("%player-total-voters%", String.valueOf(getAPI().getTotalNumOfVoters(p)));
+				msg = msg.replaceAll("%player-total-voters%", String.valueOf(getAPI().getTotalNumOfRaters(p)));
 			if (msg.contains("%cooldown%"))
 				msg = msg.replaceAll("%cooldown%",
 						String.valueOf(cooldown.get(p.getUniqueId()) + getConfig().getInt("cooldown")
@@ -101,7 +101,7 @@ public class Main extends JavaPlugin {
 			if (msg.contains("%target-average%"))
 				msg = msg.replaceAll("%target-average%", String.valueOf(getAPI().getAverageRating(t)));
 			if (msg.contains("%target-total-voters%"))
-				msg = msg.replaceAll("%target-total-voters%", String.valueOf(getAPI().getTotalNumOfVoters(t)));
+				msg = msg.replaceAll("%target-total-voters%", String.valueOf(getAPI().getTotalNumOfRaters(t)));
 			if (msg.contains("%cooldown%"))
 				msg = msg.replaceAll("%cooldown%",
 						String.valueOf(cooldown.get(t.getUniqueId()) + getConfig().getInt("cooldown")

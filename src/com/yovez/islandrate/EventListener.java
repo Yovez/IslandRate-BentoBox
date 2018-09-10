@@ -137,7 +137,6 @@ public class EventListener implements Listener {
 							return;
 						}
 						e.getPlayer().sendMessage(plugin.getMessage("top.header", e.getPlayer(), null, 0, 0));
-						// try {
 						for (int i = 1; i < 11; i++) {
 							if (plugin.getAPI().getTotalRatings(plugin.getAPI().getTopRated(i)) == 0) {
 								break;
@@ -147,9 +146,6 @@ public class EventListener implements Listener {
 											plugin.getAPI().getTotalRatings(plugin.getAPI().getTopRated(i)), i));
 						}
 						e.getPlayer().sendMessage(plugin.getMessage("top.footer", e.getPlayer(), null, 0, 0));
-						// } catch (SQLException e) {
-						// e.printStackTrace();
-						// }
 						return;
 					}
 					if (sign.getLine(1)
@@ -271,7 +267,6 @@ public class EventListener implements Listener {
 		}
 		e.setCancelled(true);
 		if (plugin.getConfig().getBoolean("top_menu.teleport", false) == true) {
-			// Bukkit.broadcastMessage("Teleporting...");
 			SkullMeta meta = (SkullMeta) e.getCurrentItem().getItemMeta();
 			Location loc;
 			if (!Bukkit.getVersion().contains("1.12")) {
@@ -310,18 +305,18 @@ public class EventListener implements Listener {
 
 			@Override
 			public void run() {
-				ItemStack item = e.getCurrentItem();
-				if (item.equals(im.getOptOut())) {
-					plugin.getOptOut().getConfig().set(p.getUniqueId().toString(),
-							!plugin.getOptOut().getConfig().getBoolean(p.getUniqueId().toString(), false));
-					plugin.getOptOut().saveConfig();
-				}
 				if (plugin.getConfig().getBoolean("island_menu.custom", false) == false)
 					im.openInv();
 				else
 					im.openCustomInv();
 			}
 		});
+		ItemStack item = e.getCurrentItem();
+		if (item.equals(im.getOptOut())) {
+			plugin.getOptOut().getConfig().set(p.getUniqueId().toString(),
+					!plugin.getOptOut().getConfig().getBoolean(p.getUniqueId().toString(), false));
+			plugin.getOptOut().saveConfig();
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -347,7 +342,6 @@ public class EventListener implements Listener {
 		}
 		e.setCancelled(true);
 		if (plugin.getConfig().getBoolean("infinite_top_menu.teleport", false) == true) {
-			// Bukkit.broadcastMessage("Teleporting...");
 			SkullMeta meta = (SkullMeta) e.getCurrentItem().getItemMeta();
 			Location loc;
 			if (!Bukkit.getVersion().contains("1.12")) {

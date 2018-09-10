@@ -34,7 +34,7 @@ public class Placeholders extends PlaceholderHook {
 				return String.valueOf(api.getTotalRatings(api.getTopRated(num)));
 			}
 		if (label.equalsIgnoreCase("total_voters"))
-			return String.valueOf(api.getTotalNumOfVoters(p));
+			return String.valueOf(api.getTotalNumOfRaters(p));
 		if (label.equalsIgnoreCase("top_rated_amount"))
 			return String.valueOf(api.getTotalRatings(api.getTopRated()));
 		if (label.startsWith("top_rated_amount_"))
