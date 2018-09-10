@@ -157,8 +157,16 @@ public class IslandRateAPI {
 			return 0.0;
 		if (getTotalNumOfVoters(p) == 0)
 			return getTotalRatings(p);
-		return (double) (getTotalRatings(p) / getTotalNumOfVoters(p));
+		return getTotalRatings(p) / getTotalNumOfVoters(p);
 	}
+
+	/**
+	 * Get the total number of voters for an island
+	 * 
+	 * @param p the player to get the total number of voters
+	 * @return the total number of voters
+	 * @since 1.3.3.5
+	 */
 
 	public int getTotalNumOfVoters(OfflinePlayer p) {
 		if (p == null)
