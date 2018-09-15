@@ -225,6 +225,7 @@ public class EventListener implements Listener {
 		if (!e.getInventory().getTitle().equals(menu.getInv().getTitle())) {
 			return;
 		}
+		e.setCancelled(true);
 		Bukkit.getServer().getScheduler().runTask(plugin, new Runnable() {
 
 			@Override
@@ -240,7 +241,6 @@ public class EventListener implements Listener {
 		if (item.getItems().containsKey(e.getCurrentItem()))
 			if (item.getItems().get(e.getCurrentItem()) > 0)
 				plugin.rateIsland(p, op, item.getItems().get(e.getCurrentItem()));
-		e.setCancelled(true);
 
 	}
 
