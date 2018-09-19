@@ -51,6 +51,9 @@ public class Main extends JavaPlugin {
 		Bukkit.getServer().getPluginManager().registerEvents(new EventListener(this), this);
 		if (plugin.getConfig().getInt("cooldown", 60) > 0)
 			cooldown = new HashMap<UUID, Long>();
+		if (getConfig().getBoolean("inv_check.enabled", false) == true)
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new InventoryCheck(this), 0L,
+					getConfig().getLong("inv_check.timer") * 1000);
 	}
 
 	public static Main getPlugin() {

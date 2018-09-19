@@ -5,6 +5,14 @@
 - Add support for BentoBox
 - Add option for players to opt-out of island ratings
 
+[1.3.3.6b] - 2018-09-18
+
+Added:
+- New inv check feature, to check for items that have been taken from the IslandRate
+menus by glitching the menu. Includes a config section to enable, and an automatic timer.
+- New '/rate invcheck' command to manually check all online player's inventorys at once for
+any glitched items.
+
 [1.3.3.6] - 2018-08-29
 
 Added:
@@ -14,6 +22,10 @@ Added:
 Changed:
 - All messages now read from the new messages.yml file
 - /rate reload now reloads both config.yml and messages.yml
+- When the inventory event cancels
+
+Removed:
+- Cleaned up code, made less sloppy/spaghetti
 
 [1.3.3.5] - 2018-08-27
 
