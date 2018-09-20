@@ -4,6 +4,7 @@ max-command-rating: 5
 min-island-level: 0
 send-owner-message: false
 cooldown: 60
+placeholderapi_shortened: false
 inv_check:
   enabled: false
   timer: 600

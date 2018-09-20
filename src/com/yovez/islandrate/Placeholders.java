@@ -11,7 +11,10 @@ public class Placeholders extends PlaceholderHook {
 
 	public Placeholders(Main plugin) {
 		this.plugin = plugin;
-		PlaceholderAPI.registerPlaceholderHook("islandrate", this);
+		if (plugin.getConfig().getBoolean("placeholderapi_shortened", false) == true)
+			PlaceholderAPI.registerPlaceholderHook("ir", this);
+		else
+			PlaceholderAPI.registerPlaceholderHook("islandrate", this);
 	}
 
 	@Override

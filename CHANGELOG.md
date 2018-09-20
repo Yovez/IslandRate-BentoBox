@@ -5,6 +5,18 @@
 - Add support for BentoBox
 - Add option for players to opt-out of island ratings
 
+[1.3.3.6c] - 2018-09-19
+
+Added:
+- Option to change IslandRate placeholderapi's to shortend prefix (islandrate vs ir)
+- Config option, true/false 'placeholderapi_shortened'
+
+Fixed:
+- Correctly implemented invcheck command
+
+Removed:
+- Unused command, and obsolete code, temporarily.
+
 [1.3.3.6b] - 2018-09-18
 
 Added:
