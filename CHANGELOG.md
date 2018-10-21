@@ -5,6 +5,10 @@
 - Add support for BentoBox
 - Add option for players to opt-out of island ratings
 
+[1.3.3.6d] - 2018-10-20
+
+
+
 [1.3.3.6c] - 2018-09-19
 
 Added:

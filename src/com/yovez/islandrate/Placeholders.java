@@ -7,9 +7,9 @@ import me.clip.placeholderapi.PlaceholderHook;
 
 public class Placeholders extends PlaceholderHook {
 
-	Main plugin;
+	IslandRate plugin;
 
-	public Placeholders(Main plugin) {
+	public Placeholders(IslandRate plugin) {
 		this.plugin = plugin;
 		if (plugin.getConfig().getBoolean("placeholderapi_shortened", false) == true)
 			PlaceholderAPI.registerPlaceholderHook("ir", this);

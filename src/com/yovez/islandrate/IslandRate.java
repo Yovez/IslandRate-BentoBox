@@ -24,14 +24,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.wasteofplastic.askyblock.ASkyBlockAPI;
 import com.wasteofplastic.askyblock.Island;
 
-public class Main extends JavaPlugin {
+public class IslandRate extends JavaPlugin {
 
 	private MySQL mysql;
 	private ASkyBlockAPI askyblock;
 	private IslandRateAPI api;
 	private Map<UUID, Long> cooldown;
 	private CustomConfig messages, optOut;
-	public static Main plugin;
+	public static IslandRate plugin;
 
 	@Override
 	public void onEnable() {
@@ -56,17 +56,18 @@ public class Main extends JavaPlugin {
 					getConfig().getLong("inv_check.timer") * 1000);
 	}
 
-	public static Main getPlugin() {
+	public static IslandRate getPlugin() {
 		return plugin;
 	}
 
 	@Override
 	public void onDisable() {
 		messages.saveConfig();
+		optOut.saveConfig();
 		try {
 			if (mysql != null)
-				if (mysql.getConnection() != null)
-					mysql.getConnection().close();
+				if (mysql.getConnection() != null && !mysql.getConnection().isClosed())
+					DbUtils.close(mysql.getConnection());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -321,6 +322,10 @@ public class Main extends JavaPlugin {
 			Bukkit.getPlayer(island.getOwner()).sendMessage(getMessage("owner-message", p, p, rating, 0));
 		if (cooldown != null)
 			cooldown.put(p.getUniqueId(), TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+		if (getConfig().getBoolean("logging.enabled", false) == true)
+			if (getConfig().getBoolean("logging.rate-island", false) == true)
+				Bukkit.getConsoleSender().sendMessage("§2[IslandRate] §eLOG§f: " + p.getName() + " rated "
+						+ op.getName() + "'s Island " + rating + ".");
 	}
 
 	public ASkyBlockAPI getAskyblock() {

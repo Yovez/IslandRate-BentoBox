@@ -15,13 +15,13 @@ public class IslandRateAPI {
 
 	public static IslandRateAPI getInstance() {
 		if (instance == null)
-			new IslandRateAPI(Main.getPlugin());
+			new IslandRateAPI(IslandRate.getPlugin());
 		return instance;
 	}
 
-	private Main plugin;
+	private IslandRate plugin;
 
-	protected IslandRateAPI(Main plugin) {
+	protected IslandRateAPI(IslandRate plugin) {
 		this.plugin = plugin;
 		instance = this;
 	}
@@ -54,7 +54,6 @@ public class IslandRateAPI {
 			conn = plugin.getMySQL().getConnection();
 			ps = conn.prepareStatement("SELECT * FROM island_owners ORDER BY total_ratings DESC LIMIT "
 					+ String.valueOf(topPlace - 1) + ", 1;");
-			ps.executeQuery();
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				if (UUID.fromString(rs.getString("player_uuid")) == null)

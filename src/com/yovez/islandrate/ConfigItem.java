@@ -8,10 +8,10 @@ import org.bukkit.inventory.ItemStack;
 
 public class ConfigItem {
 
-	final Main plugin;
+	final IslandRate plugin;
 	private Map<ItemStack, Integer> items;
 
-	public ConfigItem(Main plugin, OfflinePlayer p) {
+	public ConfigItem(IslandRate plugin, OfflinePlayer p) {
 		this.plugin = plugin;
 		if (items == null || items.isEmpty())
 			setupItems(p);

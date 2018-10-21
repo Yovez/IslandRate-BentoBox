@@ -14,10 +14,10 @@ public class CustomConfig {
 
 	private FileConfiguration customConfig;
 	private File customConfigFile;
-	private Main plugin;
+	private IslandRate plugin;
 	private String configName;
 
-	public CustomConfig(Main plugin, String configName) {
+	public CustomConfig(IslandRate plugin, String configName) {
 		this.plugin = plugin;
 		this.configName = configName;
 

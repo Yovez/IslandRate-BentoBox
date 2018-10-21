@@ -20,9 +20,9 @@ import com.wasteofplastic.askyblock.Island;
 
 public class EventListener implements Listener {
 
-	final Main plugin;
+	final IslandRate plugin;
 
-	public EventListener(Main plugin) {
+	public EventListener(IslandRate plugin) {
 		this.plugin = plugin;
 	}
 

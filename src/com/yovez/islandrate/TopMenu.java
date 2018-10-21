@@ -15,11 +15,11 @@ import net.md_5.bungee.api.ChatColor;
 
 public class TopMenu {
 
-	final Main plugin;
+	final IslandRate plugin;
 	private Inventory inv;
 	private List<ItemStack> items;
 
-	public TopMenu(Main plugin) {
+	public TopMenu(IslandRate plugin) {
 		this.plugin = plugin;
 		inv = Bukkit.createInventory(null, 27, getTitle());
 		items = new ArrayList<ItemStack>();

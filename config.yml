@@ -8,6 +8,9 @@ placeholderapi_shortened: false
 inv_check:
   enabled: false
   timer: 600
+logging:
+  enabled: false
+  rate-island: false
 menu:
   enabled: false
   custom: false

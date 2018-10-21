@@ -17,16 +17,16 @@ import net.md_5.bungee.api.ChatColor;
 
 public class RateMenu {
 
-	final Main plugin;
+	final IslandRate plugin;
 	private Inventory inv;
 	private OfflinePlayer player;
 	private List<ItemStack> items;
 
-	public RateMenu(Main plugin) {
+	public RateMenu(IslandRate plugin) {
 		this.plugin = plugin;
 	}
 
-	public RateMenu(Main plugin, OfflinePlayer player) {
+	public RateMenu(IslandRate plugin, OfflinePlayer player) {
 		this.plugin = plugin;
 		this.player = player;
 		inv = Bukkit.createInventory(null, 9, getTitle());

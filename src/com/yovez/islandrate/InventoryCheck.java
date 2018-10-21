@@ -7,12 +7,13 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class InventoryCheck implements Runnable {
 
-	Main plugin;
+	IslandRate plugin;
 
-	public InventoryCheck(Main plugin) {
+	public InventoryCheck(IslandRate plugin) {
 		this.plugin = plugin;
 	}
 
@@ -21,17 +22,20 @@ public class InventoryCheck implements Runnable {
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			Inventory inv = p.getInventory();
 			RateMenu menu = new RateMenu(plugin, p);
-			if (inv.contains(menu.getHelp())) {
-				inv.remove(menu.getHelp());
-			}
-			if (inv.contains(menu.getSkull())) {
-				inv.remove(menu.getSkull());
-			}
-			for (int i = 0; i < 5; i++) {
-				if (inv.contains(menu.getStar(i))) {
-					inv.remove(menu.getStar(i));
+			if (inv.getContents().length > 0)
+				for (ItemStack item : inv.getContents()) {
+					if (item.equals(menu.getHelp())) {
+						inv.remove(menu.getHelp());
+					}
+					if (item.equals(menu.getSkull())) {
+						inv.remove(menu.getSkull());
+					}
+					for (int i = 0; i < 5; i++) {
+						if (item.equals(menu.getStar(i))) {
+							inv.remove(menu.getStar(i));
+						}
+					}
 				}
-			}
 		}
 	}
 

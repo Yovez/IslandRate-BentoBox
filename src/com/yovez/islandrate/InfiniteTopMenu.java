@@ -16,11 +16,11 @@ import net.md_5.bungee.api.ChatColor;
 
 public class InfiniteTopMenu {
 
-	final Main plugin;
+	final IslandRate plugin;
 	private Inventory inv;
 	private List<ItemStack> items;
 
-	public InfiniteTopMenu(Main plugin) {
+	public InfiniteTopMenu(IslandRate plugin) {
 		this.plugin = plugin;
 		inv = Bukkit.createInventory(null, 54, getTitle());
 		items = new ArrayList<ItemStack>();

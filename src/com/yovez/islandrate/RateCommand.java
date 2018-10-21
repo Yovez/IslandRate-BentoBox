@@ -14,13 +14,13 @@ import com.wasteofplastic.askyblock.Island;
 
 public class RateCommand implements CommandExecutor {
 
-	final Main plugin;
+	final IslandRate plugin;
 	String prefix;
 	boolean menu;
 	boolean topMenu;
 	boolean disableCommand;
 
-	public RateCommand(Main plugin) {
+	public RateCommand(IslandRate plugin) {
 		this.plugin = plugin;
 		setupPrefix();
 	}

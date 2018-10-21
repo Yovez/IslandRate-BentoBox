@@ -14,7 +14,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class MySQL {
 
-	final Main plugin;
+	final IslandRate plugin;
 	private Connection connection;
 	private String host, port, database, username, password, storageType;
 
@@ -22,11 +22,11 @@ public class MySQL {
 
 	public static MySQL getInstance() {
 		if (instance == null)
-			new MySQL(Main.getPlugin());
+			new MySQL(IslandRate.getPlugin());
 		return instance;
 	}
 
-	protected MySQL(Main plugin) {
+	protected MySQL(IslandRate plugin) {
 		this.plugin = plugin;
 		instance = this;
 		storageType = getConfig().getString("storage.type", "SQLITE");
@@ -37,7 +37,8 @@ public class MySQL {
 		password = getConfig().getString("storage.mysql.password", "password");
 		try {
 			openConnection(storageType);
-			setupDatabase();
+			if (!doesTableExist("island_owners") || !doesTableExist("island_ratings"))
+				setupDatabase();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			Bukkit.getConsoleSender().sendMessage(
@@ -48,7 +49,7 @@ public class MySQL {
 				if (connection != null && !connection.isClosed()) {
 					Bukkit.getConsoleSender()
 							.sendMessage("§2[IslandRate] §a" + storageType + " successfully connected!");
-					connection.close();
+					DbUtils.close(connection);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -57,23 +58,17 @@ public class MySQL {
 	}
 
 	public void convertFromFile() throws SQLException, ClassNotFoundException {
-		if (connection == null || connection.isClosed()) {
-			Bukkit.getConsoleSender().sendMessage(
-					"§2[IslandRate] §4WARNING: §cAn error occured while trying to convert from files to MySQL/SQLite storage. "
-							+ "Please notify the Developer!");
-			return;
-		}
-		openConnection(storageType);
+		Connection conn = getConnection();
 		for (OfflinePlayer op : Bukkit.getServer().getOfflinePlayers()) {
 			YovezConfig c = new YovezConfig(op.getUniqueId().toString());
 			for (String key : c.getConfig().getKeys(false)) {
 				int rating = c.getConfig().getInt(key);
 				OfflinePlayer v = Bukkit.getOfflinePlayer(UUID.fromString(key));
-				PreparedStatement ps = getConnection()
+				PreparedStatement ps = conn
 						.prepareStatement("REPLACE INTO island_owners(player_uuid, total_ratings) VALUES (?,?);");
 				ps.setString(1, op.getUniqueId().toString());
 				ps.setInt(2, IslandRateAPI.getInstance().getTotalRatings(op) + rating);
-				PreparedStatement psr = getConnection().prepareStatement(
+				PreparedStatement psr = conn.prepareStatement(
 						"REPLACE INTO island_ratings(rater_uuid, player_uuid, rating) VALUES (?,?,?);");
 				psr.setString(1, v.getUniqueId().toString());
 				psr.setString(2, op.getUniqueId().toString());
@@ -103,36 +98,32 @@ public class MySQL {
 		ps.executeUpdate();
 		DbUtils.close(ps);
 		PreparedStatement ps2 = null, ps3 = null, ps4 = null, ps5 = null;
-		DatabaseMetaData meta = connection.getMetaData();
-		ResultSet rs = meta.getTables(null, null, "island_ratings", null);
-		if (rs.next()) {
-			if (plugin.getConfig().getBoolean("storage.first-time-setup", true) == true)
-				if (storageType.equalsIgnoreCase("sqlite")) {
-					ps2 = connection.prepareStatement(
-							"CREATE TABLE island_ratings_copy (id INTEGER PRIMARY KEY, rater_uuid TEXT NOT NULL, "
-									+ "player_uuid TEXT NOT NULL, rating INTEGER NOT NULL);");
-					ps2.executeUpdate();
-					DbUtils.close(ps2);
-					ps3 = connection
-							.prepareStatement("INSERT INTO island_ratings_copy (rater_uuid, player_uuid, rating) "
-									+ "SELECT rater_uuid, player_uuid, rating FROM island_ratings;");
-					ps3.executeUpdate();
-					DbUtils.close(ps3);
-					ps4 = connection.prepareStatement("DROP TABLE island_ratings;");
-					ps4.executeUpdate();
-					DbUtils.close(ps4);
-					ps5 = connection.prepareStatement("ALTER TABLE island_ratings_copy RENAME TO island_ratings;");
-					ps5.executeUpdate();
-					DbUtils.close(ps5);
-				} else if (storageType.equalsIgnoreCase("mysql")) {
-					ps3 = connection.prepareStatement("ALTER TABLE island_ratings DROP PRIMARY KEY;");
-					ps3.executeUpdate();
-					DbUtils.close(ps3);
-					ps5 = connection.prepareStatement(
-							"ALTER TABLE island_ratings ADD COLUMN id INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT FIRST;");
-					ps5.executeUpdate();
-					DbUtils.close(ps5);
-				}
+		if (doesTableExist("island_ratings")) {
+			if (storageType.equalsIgnoreCase("sqlite")) {
+				ps2 = connection.prepareStatement(
+						"CREATE TABLE island_ratings_copy (id INTEGER PRIMARY KEY, rater_uuid TEXT NOT NULL, "
+								+ "player_uuid TEXT NOT NULL, rating INTEGER NOT NULL);");
+				ps2.executeUpdate();
+				DbUtils.close(ps2);
+				ps3 = connection.prepareStatement("INSERT INTO island_ratings_copy (rater_uuid, player_uuid, rating) "
+						+ "SELECT rater_uuid, player_uuid, rating FROM island_ratings;");
+				ps3.executeUpdate();
+				DbUtils.close(ps3);
+				ps4 = connection.prepareStatement("DROP TABLE island_ratings;");
+				ps4.executeUpdate();
+				DbUtils.close(ps4);
+				ps5 = connection.prepareStatement("ALTER TABLE island_ratings_copy RENAME TO island_ratings;");
+				ps5.executeUpdate();
+				DbUtils.close(ps5);
+			} else if (storageType.equalsIgnoreCase("mysql")) {
+				ps3 = connection.prepareStatement("ALTER TABLE island_ratings DROP PRIMARY KEY;");
+				ps3.executeUpdate();
+				DbUtils.close(ps3);
+				ps5 = connection.prepareStatement(
+						"ALTER TABLE island_ratings ADD COLUMN id INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT FIRST;");
+				ps5.executeUpdate();
+				DbUtils.close(ps5);
+			}
 		} else {
 			if (storageType.equalsIgnoreCase("sqlite")) {
 				ps2 = connection.prepareStatement(
@@ -148,14 +139,12 @@ public class MySQL {
 				DbUtils.close(ps2);
 			}
 		}
-		DbUtils.close(rs);
-		plugin.getConfig().set("storage.first-time-setup", false);
-		plugin.saveConfig();
 	}
 
 	public void openConnection(String type) throws SQLException, ClassNotFoundException {
 		synchronized (this) {
 			if (type.equalsIgnoreCase("sqlite")) {
+				Class.forName("org.sqlite.JDBC");
 				connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder() + "/islandrate.db");
 				if (connection == null || connection.isClosed()) {
 					Bukkit.getConsoleSender().sendMessage("§2[IslandRate] §4WARNING: §cAn error occured while trying"
@@ -192,6 +181,24 @@ public class MySQL {
 			e.printStackTrace();
 		}
 		return connection;
+	}
+
+	private boolean doesTableExist(String tableName) throws SQLException {
+		DatabaseMetaData dbm = connection.getMetaData();
+		ResultSet rs = dbm.getTables(null, null, tableName, null);
+		if (rs.next())
+			return true;
+		else
+			return false;
+	}
+
+	private boolean doesColumnExist(String tableName, String columnName) throws SQLException {
+		DatabaseMetaData dbm = connection.getMetaData();
+		ResultSet rs = dbm.getColumns(null, null, tableName, columnName);
+		if (rs.next())
+			return true;
+		else
+			return false;
 	}
 
 }
