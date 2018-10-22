@@ -5,9 +5,16 @@
 - Add support for BentoBox
 - Add option for players to opt-out of island ratings
 
-[1.3.3.6d] - 2018-10-20
+[1.3.3.6d] - 2018-10-22
 
+Added:
+- New config section for logging, currently only allows logging of when a player rates an island,
+message is logged to the console
 
+Changed:
+- Main classname to IslandRate
+- How SQL loads and generates the database
+- How the inventory checker checks for glitched items
 
 [1.3.3.6c] - 2018-09-19
 
