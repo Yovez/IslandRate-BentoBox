@@ -6,7 +6,7 @@
 
 ***
 
-**Need help with the Configuration Settings/Option?** Visit the [Configuration Settings/Option Wiki](https://github.com/Yovez/IslandRate/wiki/Configuration-Settings-Options)!
+**Need help with the Configuration Settings/Option?** Visit the [IslandRate Spigot Page](https://www.spigotmc.org/resources/islandrate-askyblock-addon.53519/)!
 
 ***
 
