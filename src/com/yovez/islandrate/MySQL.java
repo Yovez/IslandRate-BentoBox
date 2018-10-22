@@ -192,6 +192,7 @@ public class MySQL {
 			return false;
 	}
 
+	@SuppressWarnings("unused")
 	private boolean doesColumnExist(String tableName, String columnName) throws SQLException {
 		DatabaseMetaData dbm = connection.getMetaData();
 		ResultSet rs = dbm.getColumns(null, null, tableName, columnName);
