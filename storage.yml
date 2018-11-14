@@ -1,0 +1,10 @@
+# Enter the Type of Storage you'd like to use
+# Only 2 Valid options:
+# SQLITE or MYSQL
+type: SQLITE
+mysql:
+  host: localhost
+  port: '3306'
+  database: minecraft
+  username: root
+  password: password

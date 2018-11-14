@@ -1,19 +1,62 @@
+# Welcome to the IslandRate config.yml File!
+# If you have questions please contact
+# Yovez on Discord: @Yovez#1337
+
+# Here are the built-in IslandRate placeholders
+# NOTE: Some of these may return null or nothing due to inproper usage
+# %prefix% - The IslandRate prefix
+# %player% - The player's name
+# %player-stars% - The player's rating amount
+# %player-average% - The player's average rating amount
+# %player-total-voters% - The player's total number of voters
+# %cooldown% - Cooldown in seconds for the player till they can rate again
+# %opted-out-player% - True/False if the player has opted out of their island being rated
+# %target% - The target's name
+# %target-stars% - The target's rating amount
+# %target-average% - The target's average rating amount
+# %target-total-voters% - The target's total number of voters
+# %cooldown% - Cooldown in seconds for the target till they can rate again
+# %opted-out-target% - True/False if the target has opted out of their island being rated
+# %rating% - The rating amount used when rating an island
+# %top-place% - The top place number when listing top places
+
+# Disable if you don't want players to be able to change
+# their rating once they've rated an island, like a one-and-done rating.
 change-rating: true
+# Set this to true to prevent users from using the /rate command alone,
+# will default to opening the rate menu.
 disable-command-rating: false
+# Change the maximum command based rate value
 max-command-rating: 5
+# The minimum island level a user requires to have before they can rate islands.
+# CURRENTLY DISABLED
 min-island-level: 0
+# Set to true to send the island owner a message when someone rates their island.
 send-owner-message: false
+# Cooldown timer to rate islands.
 cooldown: 60
+# Set to true to shorten the placeholderapi placeholder prefix for islandrate
+# (i.e. %ir% instead of %islandrate% prefix).
 placeholderapi_shortened: false
 inv_check:
+  # Set to true to enable to inventory check feature with an automated timer
+  # This checks for cheated/glitched items from the menus of IslandRate.
   enabled: false
+  # The time in seconds to automatically check for cheated/glitched items.
   timer: 600
 logging:
+  # Set to true to enable the logging feature
   enabled: false
+  # Set to true to log whenever a user rates someone's island.
   rate-island: false
+# This is the rate menu
 menu:
+  # Set to true to enable the menu for /rate
   enabled: false
+  # Set to true to be able to change the default items to custom items
+  # as listed below
   custom: false
+  # This is the menu's inventory title
   title: '&6&lRate &e%target%''s &6&lIsland &4(%target-stars%)'
   size: 9
   items:
@@ -93,24 +136,6 @@ top_menu:
       display_name: '&a#%top-place% &r&f%target%'
       lore:
       - '&6Total Ratings: &e%target-stars%'
-infinite_top_menu:
-  enabled: false
-  teleport: false
-  title: '&6&lTop Rated Islands (Categorized)'
-  items:
-    skull:
-      display_name: '&a#%top-place% &r&f%target%'
-      lore:
-      - '&6Total Ratings: &e%target-stars%'
-storage:
-  type: SQLITE
-  version: 1
-  mysql:
-    host: localhost
-    port: '3306'
-    database: minecraft
-    username: root
-    password: password
 sign:
   open-rate-menu:
     line-1: '&bOpen Rate Menu'

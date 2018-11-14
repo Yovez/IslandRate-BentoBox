@@ -10,7 +10,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wasteofplastic.askyblock.Island;
+import world.bentobox.bentobox.api.user.User;
+import world.bentobox.bentobox.database.objects.Island;
 
 public class RateCommand implements CommandExecutor {
 
@@ -91,16 +92,11 @@ public class RateCommand implements CommandExecutor {
 			}
 			if (args.length == 0) {
 				if (menu) {
-					if (!p.getLocation().getWorld().getName()
-							.equals(plugin.getAskyblock().getIslandWorld().getName())) {
-						p.sendMessage(noIsland);
+					if (plugin.getAskyblock().userIsOnIsland(p.getWorld(), User.getInstance(p))) {
+						p.sendMessage(ownedIsland);
 						return true;
 					}
-					if (plugin.getAskyblock().getOwner(p.getLocation()) == null) {
-						p.sendMessage(noIsland);
-						return true;
-					}
-					if (plugin.getAskyblock().getIslandAt(p.getLocation()).getOwner().equals(p.getUniqueId())) {
+					if (plugin.getAskyblock().getIslandAt(p.getLocation()).get().getOwner().equals(p.getUniqueId())) {
 						if (plugin.getConfig().getBoolean("island_menu.enabled", false) == true) {
 							IslandMenu im = new IslandMenu(plugin, p);
 							im.openInv();
@@ -109,8 +105,8 @@ public class RateCommand implements CommandExecutor {
 						}
 						return true;
 					}
-					RateMenu rm = new RateMenu(plugin,
-							Bukkit.getOfflinePlayer(plugin.getAskyblock().getIslandAt(p.getLocation()).getOwner()));
+					RateMenu rm = new RateMenu(plugin, Bukkit
+							.getOfflinePlayer(plugin.getAskyblock().getIslandAt(p.getLocation()).get().getOwner()));
 					if (plugin.getConfig().getBoolean("menu.custom", false) == false)
 						rm.openInv(p);
 					else
@@ -225,24 +221,20 @@ public class RateCommand implements CommandExecutor {
 					p.sendMessage(commandDisabled);
 					return true;
 				}
-				if (!p.getLocation().getWorld().getName().equals(plugin.getAskyblock().getIslandWorld().getName())) {
-					p.sendMessage(noIsland);
-					return true;
-				}
-				if (plugin.getAskyblock().getOwner(p.getLocation()) == null) {
-					p.sendMessage(noIsland);
-					return true;
-				}
-				if (plugin.getAskyblock().getIslandAt(p.getLocation()).getOwner().equals(p.getUniqueId())) {
+				if (plugin.getAskyblock().userIsOnIsland(p.getWorld(), User.getInstance(p))) {
 					p.sendMessage(ownedIsland);
 					return true;
 				}
-				Island island = plugin.getAskyblock().getIslandAt(p.getLocation());
+				if (plugin.getAskyblock().getIslandAt(p.getLocation()).get().getOwner().equals(p.getUniqueId())) {
+					p.sendMessage(ownedIsland);
+					return true;
+				}
+				Island island = plugin.getAskyblock().getIslandAt(p.getLocation()).get();
 				if (island == null) {
 					p.sendMessage(noIsland);
 					return true;
 				}
-				if (island.getMembers().contains(p.getUniqueId())) {
+				if (island.getMembers().containsKey(p.getUniqueId())) {
 					p.sendMessage(teamIsland);
 					return true;
 				}

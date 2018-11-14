@@ -19,6 +19,7 @@ public class InventoryCheck implements Runnable {
 
 	@Override
 	public void run() {
+		Map<UUID, Integer> list = new HashMap<UUID, Integer>();
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			Inventory inv = p.getInventory();
 			RateMenu menu = new RateMenu(plugin, p);
@@ -26,13 +27,16 @@ public class InventoryCheck implements Runnable {
 				for (ItemStack item : inv.getContents()) {
 					if (item.equals(menu.getHelp())) {
 						inv.remove(menu.getHelp());
+						list.put(p.getUniqueId(), list.get(p.getUniqueId()) + 1);
 					}
 					if (item.equals(menu.getSkull())) {
 						inv.remove(menu.getSkull());
+						list.put(p.getUniqueId(), list.get(p.getUniqueId()) + 1);
 					}
 					for (int i = 0; i < 5; i++) {
 						if (item.equals(menu.getStar(i))) {
 							inv.remove(menu.getStar(i));
+							list.put(p.getUniqueId(), list.get(p.getUniqueId()) + 1);
 						}
 					}
 				}
@@ -44,20 +48,23 @@ public class InventoryCheck implements Runnable {
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			Inventory inv = p.getInventory();
 			RateMenu menu = new RateMenu(plugin, p);
-			if (inv.contains(menu.getHelp())) {
-				inv.remove(menu.getHelp());
-				list.put(p.getUniqueId(), list.get(p.getUniqueId()) + 1);
-			}
-			if (inv.contains(menu.getSkull())) {
-				inv.remove(menu.getSkull());
-				list.put(p.getUniqueId(), list.get(p.getUniqueId()) + 1);
-			}
-			for (int i = 0; i < 5; i++) {
-				if (inv.contains(menu.getStar(i))) {
-					inv.remove(menu.getStar(i));
-					list.put(p.getUniqueId(), list.get(p.getUniqueId()) + 1);
+			if (inv.getContents().length > 0)
+				for (ItemStack item : inv.getContents()) {
+					if (item.equals(menu.getHelp())) {
+						inv.remove(menu.getHelp());
+						list.put(p.getUniqueId(), list.get(p.getUniqueId()) + 1);
+					}
+					if (item.equals(menu.getSkull())) {
+						inv.remove(menu.getSkull());
+						list.put(p.getUniqueId(), list.get(p.getUniqueId()) + 1);
+					}
+					for (int i = 0; i < 5; i++) {
+						if (item.equals(menu.getStar(i))) {
+							inv.remove(menu.getStar(i));
+							list.put(p.getUniqueId(), list.get(p.getUniqueId()) + 1);
+						}
+					}
 				}
-			}
 		}
 		return list;
 	}

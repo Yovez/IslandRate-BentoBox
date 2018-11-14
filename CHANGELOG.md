@@ -5,6 +5,25 @@
 - Add support for BentoBox
 - Add option for players to opt-out of island ratings
 
+[1.3.3.7] - 2018-11-13
+
+The Last Changelog :/
+I will no longer be writing these changelogs
+All changes are visible in GitHub if
+interested.
+
+Added:
+- Support for BentoBox, moving away from ASkyBlock.
+- The beginning of comments in the plugin's files to better understand
+  what your configurating.
+
+Removed:
+- A few features to better support BentoBox-
+  will be added back in a future update.
+
+Changed:
+- Storage config options to a new config storage.yml
+
 [1.3.3.6d] - 2018-10-22
 
 Added:

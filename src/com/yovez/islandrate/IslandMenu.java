@@ -38,7 +38,7 @@ public class IslandMenu {
 
 	@SuppressWarnings("deprecation")
 	public ItemStack getSkull() {
-		ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+		ItemStack item = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (byte) 3);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
 		meta.setDisplayName("§r§f" + player.getName());
 		if (Bukkit.getVersion().contains("1.7") || Bukkit.getVersion().contains("1.8"))
@@ -122,8 +122,9 @@ public class IslandMenu {
 						continue;
 					s = "island_menu.items." + s;
 					if (s.equalsIgnoreCase("island_menu.items.skull")) {
-						ItemStack item = new ItemStack(Material.SKULL_ITEM, plugin.getConfig().getInt(s + ".amount"),
-								(byte) 3);
+						ItemStack item = new ItemStack(Material.LEGACY_SKULL_ITEM,
+								plugin.getConfig().getInt(s + ".amount"),
+								(byte) plugin.getConfig().getInt("s" + "durability"));
 						SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
 						skullMeta.setDisplayName(plugin.getMessage(s + ".display_name", null, player, 0, 0));
 						if (!Bukkit.getVersion().contains("1.12"))

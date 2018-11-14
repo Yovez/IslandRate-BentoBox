@@ -29,12 +29,12 @@ public class MySQL {
 	protected MySQL(IslandRate plugin) {
 		this.plugin = plugin;
 		instance = this;
-		storageType = getConfig().getString("storage.type", "SQLITE");
-		host = getConfig().getString("storage.mysql.host", "localhost");
-		port = getConfig().getString("storage.mysql.port", "3306");
-		database = getConfig().getString("storage.mysql.database", "minecraft");
-		username = getConfig().getString("storage.mysql.username", "root");
-		password = getConfig().getString("storage.mysql.password", "password");
+		storageType = getConfig().getString("type", "SQLITE");
+		host = getConfig().getString("mysql.host", "localhost");
+		port = getConfig().getString("mysql.port", "3306");
+		database = getConfig().getString("mysql.database", "minecraft");
+		username = getConfig().getString("mysql.username", "root");
+		password = getConfig().getString("mysql.password", "password");
 		try {
 			openConnection(storageType);
 			if (!doesTableExist("island_owners") || !doesTableExist("island_ratings"))
@@ -83,7 +83,7 @@ public class MySQL {
 	}
 
 	public FileConfiguration getConfig() {
-		return plugin.getConfig();
+		return plugin.getStorage().getConfig();
 	}
 
 	public void setupDatabase() throws SQLException {

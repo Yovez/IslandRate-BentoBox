@@ -1,3 +1,21 @@
+# Here are the built-in IslandRate placeholders
+# NOTE: Some of these may return null or nothing due to inproper usage
+# %prefix% - The IslandRate prefix
+# %player% - The player's name
+# %player-stars% - The player's rating amount
+# %player-average% - The player's average rating amount
+# %player-total-voters% - The player's total number of voters
+# %cooldown% - Cooldown in seconds for the player till they can rate again
+# %opted-out-player% - True/False if the player has opted out of their island being rated
+# %target% - The target's name
+# %target-stars% - The target's rating amount
+# %target-average% - The target's average rating amount
+# %target-total-voters% - The target's total number of voters
+# %cooldown% - Cooldown in seconds for the target till they can rate again
+# %opted-out-target% - True/False if the target has opted out of their island being rated
+# %rating% - The rating amount used when rating an island
+# %top-place% - The top place number when listing top places
+
 prefix: '&7Rate> '
 command-usage: '%prefix%&fTry &6/rate <star rating 1-5> &f(i.e. /rate 4)'
 no-permission: '%prefix%&fYou don''t have permission to do that!'

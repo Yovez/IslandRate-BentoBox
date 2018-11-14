@@ -33,7 +33,7 @@ public class TopMenu {
 	public ItemStack getSkull(OfflinePlayer player, int place) {
 		if (player == null)
 			return null;
-		ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+		ItemStack item = new ItemStack(Material.LEGACY_SKULL_ITEM);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
 		meta.setDisplayName(plugin.getMessage("top_menu.items.skull.display_name", null, player, 0, place));
 		if (!Bukkit.getVersion().contains("1.12"))

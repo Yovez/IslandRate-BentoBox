@@ -21,16 +21,19 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.wasteofplastic.askyblock.ASkyBlockAPI;
-import com.wasteofplastic.askyblock.Island;
+import world.bentobox.bentobox.BentoBox;
+import world.bentobox.bentobox.database.objects.Island;
+import world.bentobox.bentobox.managers.IslandsManager;
 
 public class IslandRate extends JavaPlugin {
 
 	private MySQL mysql;
-	private ASkyBlockAPI askyblock;
+	private BentoBox bentobox;
+	private IslandsManager askyblock;
 	private IslandRateAPI api;
 	private Map<UUID, Long> cooldown;
-	private CustomConfig messages, optOut;
+	private CustomConfig messages, optOut, storage;
+
 	public static IslandRate plugin;
 
 	@Override
@@ -41,7 +44,10 @@ public class IslandRate extends JavaPlugin {
 		messages.saveDefaultConfig();
 		optOut = new CustomConfig(this, "opt-out");
 		optOut.saveDefaultConfig();
-		askyblock = ASkyBlockAPI.getInstance();
+		storage = new CustomConfig(this, "storage");
+		storage.saveDefaultConfig();
+		bentobox = BentoBox.getInstance();
+		askyblock = bentobox.getIslands();
 		api = IslandRateAPI.getInstance();
 		mysql = MySQL.getInstance();
 		getCommand("rate").setExecutor(new RateCommand(this));
@@ -125,7 +131,7 @@ public class IslandRate extends JavaPlugin {
 		if (!getConfig().contains(path))
 			return null;
 		ItemStack item = new ItemStack(Material.matchMaterial(getConfig().getString(path + ".material").toUpperCase()),
-				getConfig().getInt(path + ".amount", 1), (short) getConfig().getInt(path + ".durability", 0));
+				getConfig().getInt(path + ".amount", 1));
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(getMessage(path + ".display_name", null, op, 0, 0));
 		meta.setLore(getConvertedLore(path, op));
@@ -162,27 +168,7 @@ public class IslandRate extends JavaPlugin {
 					"§2[IslandRate] §4WARNING: §cAn error occured! Please tell the developer about this error! (R393)");
 			return;
 		}
-		if (getConfig().getLong("min-island-level", 0) > 0) {
-			if (askyblock.hasIsland(p.getUniqueId())) {
-				if (askyblock.getLongIslandLevel(p.getUniqueId()) < getConfig().getLong("min-island-level", 0)) {
-					p.sendMessage(getMessage("incorrect-level", p, null, 0, 0));
-					p.playSound(p.getLocation(),
-							Sound.valueOf(Bukkit.getVersion().contains("1.7") || Bukkit.getVersion().contains("1.8")
-									? "ANVIL_BREAK"
-									: "BLOCK_ANVIL_BREAK"),
-							100, 100);
-					return;
-				}
-				p.sendMessage(getMessage("incorrect-level", p, null, 0, 0));
-				p.playSound(p.getLocation(),
-						Sound.valueOf(Bukkit.getVersion().contains("1.7") || Bukkit.getVersion().contains("1.8")
-								? "ANVIL_BREAK"
-								: "BLOCK_ANVIL_BREAK"),
-						100, 100);
-				return;
-			}
-		}
-		Island island = getAskyblock().getIslandOwnedBy(op.getUniqueId());
+		Island island = getAskyblock().getIsland(p.getWorld(), p.getUniqueId());
 		if (island == null) {
 			p.sendMessage(getMessage("no-island", p, null, 0, 0));
 			p.playSound(p.getLocation(),
@@ -328,7 +314,11 @@ public class IslandRate extends JavaPlugin {
 						+ op.getName() + "'s Island " + rating + ".");
 	}
 
-	public ASkyBlockAPI getAskyblock() {
+	public BentoBox getBentoBox() {
+		return bentobox;
+	}
+
+	public IslandsManager getAskyblock() {
 		return askyblock;
 	}
 
@@ -346,5 +336,13 @@ public class IslandRate extends JavaPlugin {
 
 	public CustomConfig getOptOut() {
 		return optOut;
+	}
+
+	public CustomConfig getStorage() {
+		return storage;
+	}
+
+	public IslandsManager getIslands() {
+		return askyblock;
 	}
 }
