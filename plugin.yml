@@ -1,6 +1,6 @@
 name: IslandRate
 main: com.yovez.islandrate.IslandRate
-version: 1.3.3.7
+version: 1.3.3.7.1
 author: Yovez
 depend: [BentoBox]
 softdepend: [PlaceholderAPI]
