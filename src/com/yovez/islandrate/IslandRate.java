@@ -21,6 +21,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.yovez.islandrate.api.IslandRateAPI;
+import com.yovez.islandrate.command.RateCommand;
+import com.yovez.islandrate.listener.EventListener;
+import com.yovez.islandrate.misc.CustomConfig;
+import com.yovez.islandrate.misc.InventoryCheck;
+import com.yovez.islandrate.misc.MySQL;
+import com.yovez.islandrate.misc.Placeholders;
+import com.yovez.islandrate.util.DbUtils;
+
 import world.bentobox.bentobox.BentoBox;
 import world.bentobox.bentobox.database.objects.Island;
 import world.bentobox.bentobox.managers.IslandsManager;

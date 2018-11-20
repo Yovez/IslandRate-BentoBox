@@ -1,6 +1,9 @@
-package com.yovez.islandrate;
+package com.yovez.islandrate.misc;
 
 import org.bukkit.entity.Player;
+
+import com.yovez.islandrate.IslandRate;
+import com.yovez.islandrate.api.IslandRateAPI;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderHook;

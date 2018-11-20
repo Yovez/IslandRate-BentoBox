@@ -66,11 +66,20 @@ menu:
       display_name: '&r&c%target%'
       lore:
       - '&4Total Ratings: &c%target-stars%'
+    # The Item identifier, only for config file, must be unique!
     help:
+      # The slot number the item will be in inside the menu
       slot: 2
+      # The exact item material name (does not support numbers)
+      # Find all the Material Names here:
+      # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
       material: BOOK
+      # The amount of the item
       amount: 1
+      # The name of the item to show, supports internal placeholders
+      # and colors
       display_name: '&2Rating Info'
+      # The lore of the item, delete this section to remove the lore
       lore:
       - '&aRate the island'
       - '&aChoose your rating 1-5'

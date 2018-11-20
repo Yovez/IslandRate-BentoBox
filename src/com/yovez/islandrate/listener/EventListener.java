@@ -1,4 +1,4 @@
-package com.yovez.islandrate;
+package com.yovez.islandrate.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,6 +16,12 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+
+import com.yovez.islandrate.IslandRate;
+import com.yovez.islandrate.menu.IslandMenu;
+import com.yovez.islandrate.menu.RateMenu;
+import com.yovez.islandrate.menu.TopMenu;
+import com.yovez.islandrate.misc.ConfigItem;
 
 import world.bentobox.bentobox.database.objects.Island;
 
@@ -284,23 +290,12 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onIslandMenuClick(InventoryClickEvent e) {
-		if (e.getInventory() == null)
-			return;
-		if (e.getClickedInventory() == null)
-			return;
-		if (e.getCurrentItem() == null || e.getCurrentItem().getType().equals(Material.AIR))
-			return;
-		if (e.getWhoClicked() == null)
-			return;
-		if (!(e.getWhoClicked() instanceof Player))
-			return;
-		if (e.getInventory().getType().equals(InventoryType.CREATIVE))
-			return;
-		if (e.getClickedInventory().getType().equals(InventoryType.CREATIVE))
-			return;
 		Player p = (Player) e.getWhoClicked();
-		IslandMenu im = new IslandMenu(addon, p);
-		if (!e.getInventory().getTitle().equals(im.getInv().getTitle())) {
+		Island island = addon.getIslands().getIslandAt(p.getLocation()).get();
+		if (island == null)
+			return;
+		IslandMenu menu = new IslandMenu(addon, p);
+		if (!e.getInventory().getTitle().equals(menu.getInv().getTitle())) {
 			return;
 		}
 		e.setCancelled(true);
@@ -309,13 +304,14 @@ public class EventListener implements Listener {
 			@Override
 			public void run() {
 				if (addon.getConfig().getBoolean("island_menu.custom", false) == false)
-					im.openInv();
+					menu.openInv();
 				else
-					im.openCustomInv();
+					menu.openCustomInv();
 			}
+
 		});
 		ItemStack item = e.getCurrentItem();
-		if (item.equals(im.getOptOut())) {
+		if (item.equals(menu.getOptOut())) {
 			addon.getOptOut().getConfig().set(p.getUniqueId().toString(),
 					!addon.getOptOut().getConfig().getBoolean(p.getUniqueId().toString(), false));
 			addon.getOptOut().saveConfig();

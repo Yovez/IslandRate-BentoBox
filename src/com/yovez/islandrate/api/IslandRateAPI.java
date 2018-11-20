@@ -1,4 +1,4 @@
-package com.yovez.islandrate;
+package com.yovez.islandrate.api;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +8,9 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+
+import com.yovez.islandrate.IslandRate;
+import com.yovez.islandrate.util.DbUtils;
 
 public class IslandRateAPI {
 

@@ -1,4 +1,4 @@
-package com.yovez.islandrate;
+package com.yovez.islandrate.command;
 
 import java.sql.SQLException;
 
@@ -9,6 +9,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import com.yovez.islandrate.IslandRate;
+import com.yovez.islandrate.menu.IslandMenu;
+import com.yovez.islandrate.menu.RateMenu;
+import com.yovez.islandrate.menu.TopMenu;
+import com.yovez.islandrate.misc.InventoryCheck;
 
 import world.bentobox.bentobox.api.user.User;
 import world.bentobox.bentobox.database.objects.Island;
@@ -92,10 +98,6 @@ public class RateCommand implements CommandExecutor {
 			}
 			if (args.length == 0) {
 				if (menu) {
-					if (plugin.getAskyblock().userIsOnIsland(p.getWorld(), User.getInstance(p))) {
-						p.sendMessage(ownedIsland);
-						return true;
-					}
 					if (plugin.getAskyblock().getIslandAt(p.getLocation()).get().getOwner().equals(p.getUniqueId())) {
 						if (plugin.getConfig().getBoolean("island_menu.enabled", false) == true) {
 							IslandMenu im = new IslandMenu(plugin, p);
@@ -103,6 +105,10 @@ public class RateCommand implements CommandExecutor {
 						} else {
 							p.sendMessage(ownedIsland);
 						}
+						return true;
+					}
+					if (plugin.getAskyblock().userIsOnIsland(p.getWorld(), User.getInstance(p))) {
+						p.sendMessage(ownedIsland);
 						return true;
 					}
 					RateMenu rm = new RateMenu(plugin, Bukkit
@@ -167,6 +173,7 @@ public class RateCommand implements CommandExecutor {
 					plugin.reloadConfig();
 					plugin.getMessages().reloadConfig();
 					plugin.getOptOut().reloadConfig();
+					plugin.getStorage().reloadConfig();
 					setupPrefix();
 					p.sendMessage("§aSuccessfully Reloaded IslandRate Configs!");
 					plugin.getMySQL();

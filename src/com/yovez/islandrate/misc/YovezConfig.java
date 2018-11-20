@@ -1,4 +1,4 @@
-package com.yovez.islandrate;
+package com.yovez.islandrate.misc;
 
 import java.io.File;
 

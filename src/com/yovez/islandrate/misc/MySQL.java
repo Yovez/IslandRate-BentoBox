@@ -1,4 +1,4 @@
-package com.yovez.islandrate;
+package com.yovez.islandrate.misc;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -11,6 +11,10 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
+
+import com.yovez.islandrate.IslandRate;
+import com.yovez.islandrate.api.IslandRateAPI;
+import com.yovez.islandrate.util.DbUtils;
 
 public class MySQL {
 

@@ -1,4 +1,4 @@
-package com.yovez.islandrate;
+package com.yovez.islandrate.menu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+
+import com.yovez.islandrate.IslandRate;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -29,17 +31,13 @@ public class TopMenu {
 		return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("top_menu.title"));
 	}
 
-	@SuppressWarnings("deprecation")
 	public ItemStack getSkull(OfflinePlayer player, int place) {
 		if (player == null)
 			return null;
-		ItemStack item = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (byte) 3);
+		ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
 		meta.setDisplayName(plugin.getMessage("top_menu.items.skull.display_name", null, player, 0, place));
-		if (!Bukkit.getVersion().contains("1.12"))
-			meta.setOwner(player.getName());
-		else
-			meta.setOwningPlayer(player);
+		meta.setOwningPlayer(player);
 		meta.setLore(plugin.getConvertedLore("top_menu.items.skull", player));
 		item.setItemMeta(meta);
 		if (!items.contains(item))

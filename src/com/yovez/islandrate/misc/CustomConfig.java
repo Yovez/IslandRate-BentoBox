@@ -1,4 +1,4 @@
-package com.yovez.islandrate;
+package com.yovez.islandrate.misc;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +9,8 @@ import java.util.logging.Level;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import com.yovez.islandrate.IslandRate;
 
 public class CustomConfig {
 
