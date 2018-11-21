@@ -12,7 +12,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
@@ -23,12 +22,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.yovez.islandrate.api.IslandRateAPI;
 import com.yovez.islandrate.command.RateCommand;
-import com.yovez.islandrate.listener.EventListener;
+import com.yovez.islandrate.listener.MenuListener;
+import com.yovez.islandrate.listener.SignListener;
 import com.yovez.islandrate.misc.CustomConfig;
 import com.yovez.islandrate.misc.InventoryCheck;
 import com.yovez.islandrate.misc.MySQL;
 import com.yovez.islandrate.misc.Placeholders;
 import com.yovez.islandrate.util.DbUtils;
+import com.yovez.islandrate.util.Parser;
 
 import world.bentobox.bentobox.BentoBox;
 import world.bentobox.bentobox.database.objects.Island;
@@ -63,7 +64,8 @@ public class IslandRate extends JavaPlugin {
 		if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
 			new Placeholders(this);
 		}
-		Bukkit.getServer().getPluginManager().registerEvents(new EventListener(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new MenuListener(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new SignListener(this), this);
 		if (plugin.getConfig().getInt("cooldown", 60) > 0)
 			cooldown = new HashMap<UUID, Long>();
 		if (getConfig().getBoolean("inv_check.enabled", false) == true)
@@ -71,8 +73,12 @@ public class IslandRate extends JavaPlugin {
 					getConfig().getLong("inv_check.timer") * 1000);
 	}
 
-	public static IslandRate getPlugin() {
+	public static IslandRate getInstance() {
 		return plugin;
+	}
+
+	public String getMessage(String msg, Player p, OfflinePlayer t, int rating, int topPlace) {
+		return Parser.getMessage(msg, p, t, rating, topPlace);
 	}
 
 	@Override
@@ -86,54 +92,6 @@ public class IslandRate extends JavaPlugin {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public String getMessage(String msg, Player p, OfflinePlayer t, int rating, int topPlace) {
-		if (getConfig().getString(msg) != null)
-			msg = getConfig().getString(msg);
-		else if (messages.getConfig().getString(msg) != null)
-			msg = messages.getConfig().getString(msg);
-		msg = msg.replaceAll("%prefix%", messages.getConfig().getString("prefix"));
-		if (p != null) {
-			if (msg.contains("%player%"))
-				msg = msg.replaceAll("%player%", p.getName());
-			if (msg.contains("%player-stars%"))
-				msg = msg.replaceAll("%player-stars%", String.valueOf(getAPI().getTotalRatings(p)));
-			if (msg.contains("%player-average%"))
-				msg = msg.replaceAll("%player-average%", String.valueOf(getAPI().getAverageRating(p)));
-			if (msg.contains("%player-total-voters%"))
-				msg = msg.replaceAll("%player-total-voters%", String.valueOf(getAPI().getTotalNumOfRaters(p)));
-			if (msg.contains("%cooldown%"))
-				msg = msg.replaceAll("%cooldown%",
-						String.valueOf(cooldown.get(p.getUniqueId()) + getConfig().getInt("cooldown")
-								- TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
-			if (msg.contains("%opted-out-player%"))
-				msg = msg.replaceAll("%opted-out-player%",
-						plugin.getOptOut().getConfig().getBoolean(p.getUniqueId().toString(), false) ? "True"
-								: "False");
-		}
-		if (t != null) {
-			if (msg.contains("%target%"))
-				msg = msg.replaceAll("%target%", t.getName());
-			if (msg.contains("%target-stars%"))
-				msg = msg.replaceAll("%target-stars%", String.valueOf(getAPI().getTotalRatings(t)));
-			if (msg.contains("%target-average%"))
-				msg = msg.replaceAll("%target-average%", String.valueOf(getAPI().getAverageRating(t)));
-			if (msg.contains("%target-total-voters%"))
-				msg = msg.replaceAll("%target-total-voters%", String.valueOf(getAPI().getTotalNumOfRaters(t)));
-			if (msg.contains("%cooldown%"))
-				msg = msg.replaceAll("%cooldown%",
-						String.valueOf(cooldown.get(t.getUniqueId()) + getConfig().getInt("cooldown")
-								- TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())));
-			if (msg.contains("%opted-out-target%"))
-				msg = msg.replaceAll("%opted-out-target%",
-						plugin.getOptOut().getConfig().getBoolean(t.getUniqueId().toString(), false) ? "True"
-								: "False");
-		}
-		if (rating > 0)
-			msg = msg.replaceAll("%rating%", String.valueOf(rating));
-		msg = msg.replaceAll("%top-place%", String.valueOf(topPlace));
-		return ChatColor.translateAlternateColorCodes('&', msg);
 	}
 
 	public ItemStack getConfigItem(String path, OfflinePlayer op) {
@@ -353,5 +311,9 @@ public class IslandRate extends JavaPlugin {
 
 	public IslandsManager getIslands() {
 		return askyblock;
+	}
+
+	public Map<UUID, Long> getCooldowns() {
+		return cooldown;
 	}
 }
