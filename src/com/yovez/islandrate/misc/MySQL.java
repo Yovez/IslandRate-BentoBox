@@ -26,7 +26,7 @@ public class MySQL {
 
 	public static MySQL getInstance() {
 		if (instance == null)
-			new MySQL(IslandRate.getPlugin());
+			new MySQL(IslandRate.getInstance());
 		return instance;
 	}
 

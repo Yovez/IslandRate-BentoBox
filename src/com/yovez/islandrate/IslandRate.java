@@ -26,6 +26,7 @@ import com.yovez.islandrate.listener.MenuListener;
 import com.yovez.islandrate.listener.SignListener;
 import com.yovez.islandrate.misc.CustomConfig;
 import com.yovez.islandrate.misc.InventoryCheck;
+import com.yovez.islandrate.misc.Metrics;
 import com.yovez.islandrate.misc.MySQL;
 import com.yovez.islandrate.misc.Placeholders;
 import com.yovez.islandrate.util.DbUtils;
@@ -44,7 +45,7 @@ public class IslandRate extends JavaPlugin {
 	private Map<UUID, Long> cooldown;
 	private CustomConfig messages, optOut, storage;
 
-	public static IslandRate plugin;
+	private static IslandRate plugin;
 
 	@Override
 	public void onEnable() {
@@ -71,6 +72,7 @@ public class IslandRate extends JavaPlugin {
 		if (getConfig().getBoolean("inv_check.enabled", false) == true)
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new InventoryCheck(this), 0L,
 					getConfig().getLong("inv_check.timer") * 1000);
+		new Metrics(this);
 	}
 
 	public static IslandRate getInstance() {

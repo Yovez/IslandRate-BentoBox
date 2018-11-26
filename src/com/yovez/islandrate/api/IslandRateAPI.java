@@ -18,7 +18,7 @@ public class IslandRateAPI {
 
 	public static IslandRateAPI getInstance() {
 		if (instance == null)
-			new IslandRateAPI(IslandRate.getPlugin());
+			new IslandRateAPI(IslandRate.getInstance());
 		return instance;
 	}
 
