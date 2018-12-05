@@ -109,13 +109,13 @@ public class MenuListener implements Listener {
 	@EventHandler
 	public void onIslandMenuClick(InventoryClickEvent e) {
 		Player p = (Player) e.getWhoClicked();
-		Island island = addon.getIslands().getIslandAt(p.getLocation()).get();
-		if (island == null)
-			return;
 		IslandMenu menu = new IslandMenu(addon, p);
 		if (!e.getInventory().getTitle().equals(menu.getInv().getTitle())) {
 			return;
 		}
+		Island island = addon.getIslands().getIslandAt(p.getLocation()).get();
+		if (island == null)
+			return;
 		e.setCancelled(true);
 		Bukkit.getServer().getScheduler().runTask(addon, new Runnable() {
 
