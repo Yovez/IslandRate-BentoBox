@@ -79,13 +79,7 @@ public class TopMenu {
 		});
 		return inv;
 		// Old method to build inventory...
-		/*
-		 * try { ResultSet rs = api.getTopTenSQL(); for (int i = 1; i < 10; i++) { if
-		 * (rs.next()) inv.setItem(place[i - 1],
-		 * getSkull(Bukkit.getOfflinePlayer(UUID.fromString(rs.getString(
-		 * "player_uuid"))), i)); } return inv; } catch (SQLException e) {
-		 * e.printStackTrace(); }
-		 */
+		
 	}
 
 	public Inventory getInv() {

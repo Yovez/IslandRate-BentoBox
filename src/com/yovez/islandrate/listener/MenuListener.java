@@ -29,17 +29,10 @@ public class MenuListener implements Listener {
 		this.addon = addon;
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onMenuClick(InventoryClickEvent e) {
-		/*
-		 * if (e.getInventory() == null) return; if (e.getClickedInventory() == null)
-		 * return; if (e.getCurrentItem() == null ||
-		 * e.getCurrentItem().getType().equals(Material.AIR)) return; if
-		 * (e.getWhoClicked() == null) return; if (!(e.getWhoClicked() instanceof
-		 * Player)) return; if
-		 * (e.getInventory().getType().equals(InventoryType.CREATIVE)) return; if
-		 * (e.getClickedInventory().getType().equals(InventoryType.CREATIVE)) return;
-		 */
+		
 		Player p = (Player) e.getWhoClicked();
 		Island island = addon.getIslands().getIslandAt(p.getLocation()).get();
 		if (island == null)
@@ -106,6 +99,7 @@ public class MenuListener implements Listener {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onIslandMenuClick(InventoryClickEvent e) {
 		Player p = (Player) e.getWhoClicked();

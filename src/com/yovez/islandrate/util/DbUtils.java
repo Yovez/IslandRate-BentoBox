@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DbUtils {
+public final class DbUtils {
 
 	public static void close(final ResultSet rs) throws SQLException {
 		if (rs != null)
