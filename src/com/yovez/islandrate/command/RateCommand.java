@@ -179,27 +179,7 @@ public class RateCommand implements CommandExecutor {
 					plugin.getMySQL();
 					return true;
 				}
-				/*
-				 * if (args[0].equalsIgnoreCase("reset")) { if
-				 * (!p.hasPermission("islandrate.reset")) { p.sendMessage(noPermission); return
-				 * true; } p.sendMessage(resetUsage); return true; } if
-				 * (args[0].equalsIgnoreCase("add")) { if
-				 * (!p.hasPermission("islandrate.admin.add")) { p.sendMessage(noPermission);
-				 * return true; }
-				 * p.sendMessage("§cCorrect usage is /rate add <player> <# of stars>"); return
-				 * true; } if (args[0].equalsIgnoreCase("take")) { if
-				 * (!p.hasPermission("islandrate.admin.take")) { p.sendMessage(noPermission);
-				 * return true; }
-				 * p.sendMessage("§cCorrect usage is /rate take <player> <# of stars>"); return
-				 * true; } if (args[0].equalsIgnoreCase("set")) { if
-				 * (!p.hasPermission("islandrate.admin.set")) { p.sendMessage(noPermission);
-				 * return true; }
-				 * p.sendMessage("§cCorrect usage is /rate set <player> <# of stars>"); return
-				 * true; } if (args[0].equalsIgnoreCase("inftop")) { if
-				 * (!p.hasPermission("islandrate.infinitetop")) { p.sendMessage(noPermission);
-				 * return true; } InfiniteTopMenu itm = new InfiniteTopMenu(plugin);
-				 * itm.openInv(p); return true; }
-				 */
+				
 				if (args[0].equalsIgnoreCase("top")) {
 					if (!p.hasPermission("islandrate.top")) {
 						p.sendMessage(noPermission);
@@ -284,38 +264,10 @@ public class RateCommand implements CommandExecutor {
 					p.sendMessage(getMessage("total-ratings-other", p, t, 0, 0));
 					return true;
 				}
-				/*
-				 * if (args[0].equalsIgnoreCase("add")) { if
-				 * (!p.hasPermission("islandrate.admin.add")) { p.sendMessage(noPermission);
-				 * return true; }
-				 * p.sendMessage("§cCorrect usage is /rate add <player> <# of stars>"); return
-				 * true; } if (args[0].equalsIgnoreCase("take")) { if
-				 * (!p.hasPermission("islandrate.admin.take")) { p.sendMessage(noPermission);
-				 * return true; }
-				 * p.sendMessage("§cCorrect usage is /rate take <player> <# of stars>"); return
-				 * true; } if (args[0].equalsIgnoreCase("set")) { if
-				 * (!p.hasPermission("islandrate.admin.set")) { p.sendMessage(noPermission);
-				 * return true; }
-				 * p.sendMessage("§cCorrect usage is /rate set <player> <# of stars>"); return
-				 * true; }
-				 */
+				
 			} // else if (args.length == 3) {
-			/*
-			 * if (args[0].equalsIgnoreCase("add")) { if
-			 * (!p.hasPermission("islandrate.admin.add")) { p.sendMessage(noPermission);
-			 * return true; }
-			 * p.sendMessage("§cCorrect usage is /rate add <player> <# of stars>"); return
-			 * true; } if (args[0].equalsIgnoreCase("take")) { if
-			 * (!p.hasPermission("islandrate.admin.take")) { p.sendMessage(noPermission);
-			 * return true; }
-			 * p.sendMessage("§cCorrect usage is /rate take <player> <# of stars>"); return
-			 * true; } if (args[0].equalsIgnoreCase("set")) { if
-			 * (!p.hasPermission("islandrate.admin.set")) { p.sendMessage(noPermission);
-			 * return true; }
-			 * p.sendMessage("§cCorrect usage is /rate set <player> <# of stars>"); return
-			 * true; }
-			 */
-			/* } */ else {
+			
+			 else {
 				p.sendMessage(commandUsage);
 				return true;
 			}

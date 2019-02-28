@@ -2,9 +2,14 @@
 # Only 2 Valid options:
 # SQLITE or MYSQL
 type: SQLITE
+
+# MySQL section, pointless if you are NOT using MySQL as the type above
 mysql:
+  # The host/IP of the MySQL database
   host: localhost
+  # The port that the MySQL database is using, default is 3306, make sure it's in quotes ''
   port: '3306'
+  # Name of the database to be using
   database: minecraft
   username: root
   password: password

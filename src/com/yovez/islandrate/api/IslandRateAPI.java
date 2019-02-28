@@ -29,24 +29,13 @@ public class IslandRateAPI {
 		instance = this;
 	}
 
-	/**
-	 * Get the top rated player
-	 * 
-	 * @return top rated player (OfflinePlayer)
-	 * @since 1.3.2.0
-	 */
+	
 
 	public OfflinePlayer getTopRated() {
 		return getTopRated(1);
 	}
 
-	/**
-	 * Gets the top rated player from a specific place/position
-	 * 
-	 * @param topPlace place/position of the top rated list to retrieve from
-	 * @return top rated player via topPlace
-	 * @since 1.3.2.0
-	 */
+	
 
 	public OfflinePlayer getTopRated(int topPlace) {
 		OfflinePlayer op = null;
@@ -77,12 +66,7 @@ public class IslandRateAPI {
 		return op;
 	}
 
-	/**
-	 * Get the total amount of ratings on the server
-	 * 
-	 * @return the sum of all player's ratings
-	 * @since 1.3.2.0
-	 */
+	
 
 	public int getTotalRatings() {
 		int votes = 0;
@@ -110,13 +94,7 @@ public class IslandRateAPI {
 		return votes;
 	}
 
-	/**
-	 * Get the total ratings of a specific player
-	 * 
-	 * @param p the player to get total ratings of
-	 * @return the sum of the ratings of the player
-	 * @since 1.3.2.0
-	 */
+	
 
 	public int getTotalRatings(OfflinePlayer p) {
 		if (p == null)
@@ -146,13 +124,7 @@ public class IslandRateAPI {
 		return votes;
 	}
 
-	/**
-	 * Get the average rating of a specific player
-	 * 
-	 * @param p the player to get total ratings of
-	 * @return the average of the total ratings
-	 * @since 1.3.2.5
-	 */
+	
 
 	public double getAverageRating(OfflinePlayer p) {
 		if (p == null)
@@ -162,13 +134,7 @@ public class IslandRateAPI {
 		return (double) (getTotalRatings(p) / getTotalNumOfRaters(p));
 	}
 
-	/**
-	 * Get the total number of raters of a specific player
-	 * 
-	 * @param p the player to get total raters of
-	 * @return the total number of the raters
-	 * @since 1.3.3.5
-	 */
+	
 
 	public int getTotalNumOfRaters(OfflinePlayer p) {
 		if (p == null)
@@ -199,13 +165,7 @@ public class IslandRateAPI {
 		return raters;
 	}
 
-	/**
-	 * Simple method to check if a String is an Integer
-	 * 
-	 * @param s the string to check
-	 * @return true/false depending if the String is an Integer
-	 * @since 1.3.2.0
-	 */
+	
 
 	public boolean isInt(String s) {
 		try {

@@ -33,11 +33,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-/**
- * bStats collects some data for plugin authors.
- * <p>
- * Check out https://bStats.org/ to learn more about bStats!
- */
+
 @SuppressWarnings({ "unchecked" })
 public class Metrics {
 
@@ -87,11 +83,7 @@ public class Metrics {
 	// A list with all custom charts
 	private final List<CustomChart> charts = new ArrayList<>();
 
-	/**
-	 * Class constructor.
-	 *
-	 * @param plugin The plugin which stats should be submitted.
-	 */
+	
 	public Metrics(Plugin plugin) {
 		if (plugin == null) {
 			throw new IllegalArgumentException("Plugin cannot be null!");
@@ -157,20 +149,12 @@ public class Metrics {
 		}
 	}
 
-	/**
-	 * Checks if bStats is enabled.
-	 *
-	 * @return Whether bStats is enabled or not.
-	 */
+	
 	public boolean isEnabled() {
 		return enabled;
 	}
 
-	/**
-	 * Adds a custom chart.
-	 *
-	 * @param chart The chart to add.
-	 */
+	
 	public void addCustomChart(CustomChart chart) {
 		if (chart == null) {
 			throw new IllegalArgumentException("Chart cannot be null!");
@@ -178,9 +162,7 @@ public class Metrics {
 		charts.add(chart);
 	}
 
-	/**
-	 * Starts the Scheduler which submits our data every 30 minutes.
-	 */
+	
 	private void startSubmitting() {
 		final Timer timer = new Timer(true); // We use a timer cause the Bukkit scheduler is affected by server lags
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -204,11 +186,7 @@ public class Metrics {
 		// WARNING: Just don't do it!
 	}
 
-	/**
-	 * Gets the plugin specific data. This method is called using Reflection.
-	 *
-	 * @return The plugin specific data.
-	 */
+	
 	public JSONObject getPluginData() {
 		JSONObject data = new JSONObject();
 
@@ -231,11 +209,7 @@ public class Metrics {
 		return data;
 	}
 
-	/**
-	 * Gets the server specific data.
-	 *
-	 * @return The server specific data.
-	 */
+	
 	private JSONObject getServerData() {
 		// Minecraft specific data
 		int playerAmount;
@@ -277,9 +251,7 @@ public class Metrics {
 		return data;
 	}
 
-	/**
-	 * Collects the data and sends it afterwards.
-	 */
+	
 	private void submitData() {
 		final JSONObject data = getServerData();
 
@@ -320,13 +292,7 @@ public class Metrics {
 		}).start();
 	}
 
-	/**
-	 * Sends the data to the bStats server.
-	 *
-	 * @param plugin Any plugin. It's just used to get a logger instance.
-	 * @param data   The data to send.
-	 * @throws Exception If the request failed.
-	 */
+	
 	private static void sendData(Plugin plugin, JSONObject data) throws Exception {
 		if (data == null) {
 			throw new IllegalArgumentException("Data cannot be null!");
@@ -372,13 +338,7 @@ public class Metrics {
 		}
 	}
 
-	/**
-	 * Gzips the given String.
-	 *
-	 * @param str The string to gzip.
-	 * @return The gzipped String.
-	 * @throws IOException If the compression failed.
-	 */
+	
 	private static byte[] compress(final String str) throws IOException {
 		if (str == null) {
 			return null;
@@ -390,19 +350,13 @@ public class Metrics {
 		return outputStream.toByteArray();
 	}
 
-	/**
-	 * Represents a custom chart.
-	 */
+	
 	public static abstract class CustomChart {
 
 		// The id of the chart
 		final String chartId;
 
-		/**
-		 * Class constructor.
-		 *
-		 * @param chartId The id of the chart.
-		 */
+		
 		CustomChart(String chartId) {
 			if (chartId == null || chartId.isEmpty()) {
 				throw new IllegalArgumentException("ChartId cannot be null or empty!");
@@ -433,19 +387,12 @@ public class Metrics {
 
 	}
 
-	/**
-	 * Represents a custom simple pie.
-	 */
+	
 	public static class SimplePie extends CustomChart {
 
 		private final Callable<String> callable;
 
-		/**
-		 * Class constructor.
-		 *
-		 * @param chartId  The id of the chart.
-		 * @param callable The callable which is used to request the chart data.
-		 */
+		
 		public SimplePie(String chartId, Callable<String> callable) {
 			super(chartId);
 			this.callable = callable;
@@ -464,19 +411,12 @@ public class Metrics {
 		}
 	}
 
-	/**
-	 * Represents a custom advanced pie.
-	 */
+	
 	public static class AdvancedPie extends CustomChart {
 
 		private final Callable<Map<String, Integer>> callable;
 
-		/**
-		 * Class constructor.
-		 *
-		 * @param chartId  The id of the chart.
-		 * @param callable The callable which is used to request the chart data.
-		 */
+		
 		public AdvancedPie(String chartId, Callable<Map<String, Integer>> callable) {
 			super(chartId);
 			this.callable = callable;
@@ -508,19 +448,12 @@ public class Metrics {
 		}
 	}
 
-	/**
-	 * Represents a custom drilldown pie.
-	 */
+	
 	public static class DrilldownPie extends CustomChart {
 
 		private final Callable<Map<String, Map<String, Integer>>> callable;
 
-		/**
-		 * Class constructor.
-		 *
-		 * @param chartId  The id of the chart.
-		 * @param callable The callable which is used to request the chart data.
-		 */
+		
 		public DrilldownPie(String chartId, Callable<Map<String, Map<String, Integer>>> callable) {
 			super(chartId);
 			this.callable = callable;
@@ -557,19 +490,12 @@ public class Metrics {
 		}
 	}
 
-	/**
-	 * Represents a custom single line chart.
-	 */
+	
 	public static class SingleLineChart extends CustomChart {
 
 		private final Callable<Integer> callable;
 
-		/**
-		 * Class constructor.
-		 *
-		 * @param chartId  The id of the chart.
-		 * @param callable The callable which is used to request the chart data.
-		 */
+		
 		public SingleLineChart(String chartId, Callable<Integer> callable) {
 			super(chartId);
 			this.callable = callable;
@@ -589,19 +515,12 @@ public class Metrics {
 
 	}
 
-	/**
-	 * Represents a custom multi line chart.
-	 */
+	
 	public static class MultiLineChart extends CustomChart {
 
 		private final Callable<Map<String, Integer>> callable;
 
-		/**
-		 * Class constructor.
-		 *
-		 * @param chartId  The id of the chart.
-		 * @param callable The callable which is used to request the chart data.
-		 */
+		
 		public MultiLineChart(String chartId, Callable<Map<String, Integer>> callable) {
 			super(chartId);
 			this.callable = callable;
@@ -634,19 +553,12 @@ public class Metrics {
 
 	}
 
-	/**
-	 * Represents a custom simple bar chart.
-	 */
+	
 	public static class SimpleBarChart extends CustomChart {
 
 		private final Callable<Map<String, Integer>> callable;
 
-		/**
-		 * Class constructor.
-		 *
-		 * @param chartId  The id of the chart.
-		 * @param callable The callable which is used to request the chart data.
-		 */
+		
 		public SimpleBarChart(String chartId, Callable<Map<String, Integer>> callable) {
 			super(chartId);
 			this.callable = callable;
@@ -672,19 +584,12 @@ public class Metrics {
 
 	}
 
-	/**
-	 * Represents a custom advanced bar chart.
-	 */
+	
 	public static class AdvancedBarChart extends CustomChart {
 
 		private final Callable<Map<String, int[]>> callable;
 
-		/**
-		 * Class constructor.
-		 *
-		 * @param chartId  The id of the chart.
-		 * @param callable The callable which is used to request the chart data.
-		 */
+		
 		public AdvancedBarChart(String chartId, Callable<Map<String, int[]>> callable) {
 			super(chartId);
 			this.callable = callable;
