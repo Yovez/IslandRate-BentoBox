@@ -45,7 +45,7 @@ public class Placeholders extends PlaceholderHook {
 			return String.valueOf(api.getTotalRatings(api.getTopRated()));
 		if (label.startsWith("top_rated_amount_"))
 			if (api.isInt(String.valueOf(label.charAt(label.length())))) {
-				if ((int) label.charAt(label.length()) == 0)
+				if (label.charAt(label.length()) == 0)
 					return String.valueOf(api.getTopRated(10));
 				return String.valueOf(api.getTopRated(label.charAt(label.length())));
 			}

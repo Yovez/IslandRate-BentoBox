@@ -33,7 +33,6 @@ import org.bukkit.plugin.ServicePriority;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-
 @SuppressWarnings({ "unchecked" })
 public class Metrics {
 
@@ -83,7 +82,6 @@ public class Metrics {
 	// A list with all custom charts
 	private final List<CustomChart> charts = new ArrayList<>();
 
-	
 	public Metrics(Plugin plugin) {
 		if (plugin == null) {
 			throw new IllegalArgumentException("Plugin cannot be null!");
@@ -149,12 +147,10 @@ public class Metrics {
 		}
 	}
 
-	
 	public boolean isEnabled() {
 		return enabled;
 	}
 
-	
 	public void addCustomChart(CustomChart chart) {
 		if (chart == null) {
 			throw new IllegalArgumentException("Chart cannot be null!");
@@ -162,7 +158,6 @@ public class Metrics {
 		charts.add(chart);
 	}
 
-	
 	private void startSubmitting() {
 		final Timer timer = new Timer(true); // We use a timer cause the Bukkit scheduler is affected by server lags
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -186,7 +181,6 @@ public class Metrics {
 		// WARNING: Just don't do it!
 	}
 
-	
 	public JSONObject getPluginData() {
 		JSONObject data = new JSONObject();
 
@@ -209,7 +203,6 @@ public class Metrics {
 		return data;
 	}
 
-	
 	private JSONObject getServerData() {
 		// Minecraft specific data
 		int playerAmount;
@@ -251,7 +244,6 @@ public class Metrics {
 		return data;
 	}
 
-	
 	private void submitData() {
 		final JSONObject data = getServerData();
 
@@ -292,7 +284,6 @@ public class Metrics {
 		}).start();
 	}
 
-	
 	private static void sendData(Plugin plugin, JSONObject data) throws Exception {
 		if (data == null) {
 			throw new IllegalArgumentException("Data cannot be null!");
@@ -338,7 +329,6 @@ public class Metrics {
 		}
 	}
 
-	
 	private static byte[] compress(final String str) throws IOException {
 		if (str == null) {
 			return null;
@@ -350,13 +340,11 @@ public class Metrics {
 		return outputStream.toByteArray();
 	}
 
-	
 	public static abstract class CustomChart {
 
 		// The id of the chart
 		final String chartId;
 
-		
 		CustomChart(String chartId) {
 			if (chartId == null || chartId.isEmpty()) {
 				throw new IllegalArgumentException("ChartId cannot be null or empty!");
@@ -387,12 +375,10 @@ public class Metrics {
 
 	}
 
-	
 	public static class SimplePie extends CustomChart {
 
 		private final Callable<String> callable;
 
-		
 		public SimplePie(String chartId, Callable<String> callable) {
 			super(chartId);
 			this.callable = callable;
@@ -411,12 +397,10 @@ public class Metrics {
 		}
 	}
 
-	
 	public static class AdvancedPie extends CustomChart {
 
 		private final Callable<Map<String, Integer>> callable;
 
-		
 		public AdvancedPie(String chartId, Callable<Map<String, Integer>> callable) {
 			super(chartId);
 			this.callable = callable;
@@ -448,12 +432,10 @@ public class Metrics {
 		}
 	}
 
-	
 	public static class DrilldownPie extends CustomChart {
 
 		private final Callable<Map<String, Map<String, Integer>>> callable;
 
-		
 		public DrilldownPie(String chartId, Callable<Map<String, Map<String, Integer>>> callable) {
 			super(chartId);
 			this.callable = callable;
@@ -490,12 +472,10 @@ public class Metrics {
 		}
 	}
 
-	
 	public static class SingleLineChart extends CustomChart {
 
 		private final Callable<Integer> callable;
 
-		
 		public SingleLineChart(String chartId, Callable<Integer> callable) {
 			super(chartId);
 			this.callable = callable;
@@ -515,12 +495,10 @@ public class Metrics {
 
 	}
 
-	
 	public static class MultiLineChart extends CustomChart {
 
 		private final Callable<Map<String, Integer>> callable;
 
-		
 		public MultiLineChart(String chartId, Callable<Map<String, Integer>> callable) {
 			super(chartId);
 			this.callable = callable;
@@ -553,12 +531,10 @@ public class Metrics {
 
 	}
 
-	
 	public static class SimpleBarChart extends CustomChart {
 
 		private final Callable<Map<String, Integer>> callable;
 
-		
 		public SimpleBarChart(String chartId, Callable<Map<String, Integer>> callable) {
 			super(chartId);
 			this.callable = callable;
@@ -584,12 +560,10 @@ public class Metrics {
 
 	}
 
-	
 	public static class AdvancedBarChart extends CustomChart {
 
 		private final Callable<Map<String, int[]>> callable;
 
-		
 		public AdvancedBarChart(String chartId, Callable<Map<String, int[]>> callable) {
 			super(chartId);
 			this.callable = callable;

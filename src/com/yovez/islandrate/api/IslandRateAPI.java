@@ -29,13 +29,9 @@ public class IslandRateAPI {
 		instance = this;
 	}
 
-	
-
 	public OfflinePlayer getTopRated() {
 		return getTopRated(1);
 	}
-
-	
 
 	public OfflinePlayer getTopRated(int topPlace) {
 		OfflinePlayer op = null;
@@ -66,8 +62,6 @@ public class IslandRateAPI {
 		return op;
 	}
 
-	
-
 	public int getTotalRatings() {
 		int votes = 0;
 		Connection conn = null;
@@ -93,8 +87,6 @@ public class IslandRateAPI {
 		}
 		return votes;
 	}
-
-	
 
 	public int getTotalRatings(OfflinePlayer p) {
 		if (p == null)
@@ -124,17 +116,13 @@ public class IslandRateAPI {
 		return votes;
 	}
 
-	
-
 	public double getAverageRating(OfflinePlayer p) {
 		if (p == null)
 			return 0.0;
 		if (getTotalNumOfRaters(p) == 0)
 			return getTotalRatings(p);
-		return (double) (getTotalRatings(p) / getTotalNumOfRaters(p));
+		return getTotalRatings(p) / getTotalNumOfRaters(p);
 	}
-
-	
 
 	public int getTotalNumOfRaters(OfflinePlayer p) {
 		if (p == null)
@@ -164,8 +152,6 @@ public class IslandRateAPI {
 		}
 		return raters;
 	}
-
-	
 
 	public boolean isInt(String s) {
 		try {

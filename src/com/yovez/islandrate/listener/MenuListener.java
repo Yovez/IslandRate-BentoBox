@@ -32,7 +32,7 @@ public class MenuListener implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onMenuClick(InventoryClickEvent e) {
-		
+
 		Player p = (Player) e.getWhoClicked();
 		Island island = addon.getIslands().getIslandAt(p.getLocation()).get();
 		if (island == null)

@@ -79,7 +79,7 @@ public class TopMenu {
 		});
 		return inv;
 		// Old method to build inventory...
-		
+
 	}
 
 	public Inventory getInv() {

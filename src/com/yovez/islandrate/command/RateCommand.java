@@ -179,7 +179,7 @@ public class RateCommand implements CommandExecutor {
 					plugin.getMySQL();
 					return true;
 				}
-				
+
 				if (args[0].equalsIgnoreCase("top")) {
 					if (!p.hasPermission("islandrate.top")) {
 						p.sendMessage(noPermission);
@@ -264,10 +264,10 @@ public class RateCommand implements CommandExecutor {
 					p.sendMessage(getMessage("total-ratings-other", p, t, 0, 0));
 					return true;
 				}
-				
+
 			} // else if (args.length == 3) {
-			
-			 else {
+
+			else {
 				p.sendMessage(commandUsage);
 				return true;
 			}
