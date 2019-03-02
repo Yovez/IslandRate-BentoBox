@@ -4,8 +4,4 @@
 
 ***
 
-**Need help with the Configuration Settings/Option?** Visit the [IslandRate Spigot Page](https://www.spigotmc.org/resources/islandrate-askyblock-addon.53519/)!
-
-***
-
 Did IslandRate help you, your server, and/or your players? Want to help support me and my future plugins? [Donate via PayPal](https://www.paypal.me/itsYovez)
