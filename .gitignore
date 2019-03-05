@@ -10,4 +10,4 @@
 .gradle
 .gitignore
 .gitattributes
-bin/*
+bin/
