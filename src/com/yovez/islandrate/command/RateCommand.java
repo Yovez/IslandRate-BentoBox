@@ -98,6 +98,10 @@ public class RateCommand implements CommandExecutor {
 			}
 			if (args.length == 0) {
 				if (menu) {
+					if (plugin.getAskyblock().getIslandAt(p.getLocation()) == null) {
+						p.sendMessage(noIsland);
+						return true;
+					}
 					if (plugin.getAskyblock().getIslandAt(p.getLocation()).get().getOwner().equals(p.getUniqueId())) {
 						if (plugin.getConfig().getBoolean("island_menu.enabled", false) == true) {
 							IslandMenu im = new IslandMenu(plugin, p);
@@ -157,11 +161,12 @@ public class RateCommand implements CommandExecutor {
 					}
 					try {
 						plugin.getMySQL().convertFromFile();
-						p.sendMessage("§aMigrated from file storage to MySQL/SQLite storage successfully!");
 					} catch (SQLException | ClassNotFoundException e) {
 						e.printStackTrace();
 						p.sendMessage("§cMigrated from file storage to MySQL/SQLite storage unsuccessfully :("
 								+ " Please contact the Developer!");
+					} finally {
+						p.sendMessage("§aMigrated from file storage to MySQL/SQLite storage successfully!");
 					}
 					return true;
 				}
@@ -212,13 +217,13 @@ public class RateCommand implements CommandExecutor {
 					p.sendMessage(ownedIsland);
 					return true;
 				}
-				if (plugin.getAskyblock().getIslandAt(p.getLocation()).get().getOwner().equals(p.getUniqueId())) {
-					p.sendMessage(ownedIsland);
-					return true;
-				}
 				Island island = plugin.getAskyblock().getIslandAt(p.getLocation()).get();
 				if (island == null) {
 					p.sendMessage(noIsland);
+					return true;
+				}
+				if (island.getOwner().equals(p.getUniqueId())) {
+					p.sendMessage(ownedIsland);
 					return true;
 				}
 				if (island.getMembers().containsKey(p.getUniqueId())) {

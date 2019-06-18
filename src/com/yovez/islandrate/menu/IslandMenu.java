@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -16,7 +17,7 @@ import com.yovez.islandrate.IslandRate;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class IslandMenu {
+public class IslandMenu implements InventoryHolder {
 
 	final IslandRate plugin;
 	private Inventory inv;
@@ -35,6 +36,13 @@ public class IslandMenu {
 	}
 
 	private String getTitle() {
+		if (plugin.getMessage("island_menu.title", null, player, 0, 0).length() > 32) {
+			Bukkit.getConsoleSender().sendMessage(new String[] {
+					"§2[IslandRate] §4WARNING: §cAn error occured when opening " + player.getName() + "'s Island Menu.",
+					"§2[IslandRate] §4Error: §cIsland Menu's Inventory title cannot be longer than 32 characters.",
+					"§2[IslandRate] §cPlease adjust the Title via the config.yml file to be no longer than 32 characters." });
+			return plugin.getMessage("island_menu.title", null, player, 0, 0).substring(0, 32);
+		}
 		return ChatColor.translateAlternateColorCodes('&', plugin.getMessage("island_menu.title", player, null, 0, 0));
 	}
 
@@ -153,6 +161,11 @@ public class IslandMenu {
 
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+
+	@Override
+	public Inventory getInventory() {
+		return inv;
 	}
 
 }

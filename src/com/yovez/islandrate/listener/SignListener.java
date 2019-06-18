@@ -1,7 +1,6 @@
 package com.yovez.islandrate.listener;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -89,8 +88,7 @@ public class SignListener implements Listener {
 	@EventHandler
 	public void onSignInteract(PlayerInteractEvent e) {
 		if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			if (e.getClickedBlock().getType().equals(Material.SIGN)
-					|| e.getClickedBlock().getType().equals(Material.WALL_SIGN)) {
+			if (e.getClickedBlock().getType().name().contains("_SIGN")) {
 				Sign sign = (Sign) e.getClickedBlock().getState();
 				if (sign.getLine(0).equals("§8[§aIslandRate§8]")) {
 					if (sign.getLine(1)

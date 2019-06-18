@@ -43,6 +43,12 @@ public class IslandRate extends JavaPlugin {
 	private IslandsManager askyblock;
 	private IslandRateAPI api;
 	private Map<UUID, Long> cooldown;
+	private boolean usingCache;
+	private Map<UUID, Integer> userRating;
+	private Map<UUID, Double> userAverage;
+	private Map<UUID, Integer> userRaters;
+	private Map<Integer, UUID> topRated;
+	private int totalRatings;
 	private CustomConfig messages, optOut, storage;
 
 	private static IslandRate plugin;
@@ -67,6 +73,13 @@ public class IslandRate extends JavaPlugin {
 		}
 		Bukkit.getServer().getPluginManager().registerEvents(new MenuListener(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new SignListener(this), this);
+		if (plugin.getConfig().getBoolean("use-cache-system", true) == true) {
+			usingCache = true;
+			userRating = new HashMap<>();
+			userAverage = new HashMap<>();
+			userRaters = new HashMap<>();
+			topRated = new HashMap<>();
+		}
 		if (plugin.getConfig().getInt("cooldown", 60) > 0)
 			cooldown = new HashMap<UUID, Long>();
 		if (getConfig().getBoolean("inv_check.enabled", false) == true)
@@ -263,6 +276,8 @@ public class IslandRate extends JavaPlugin {
 				e.printStackTrace();
 			}
 		}
+		if (usingCache)
+			userRating.put(op.getUniqueId(), (totalRatings + rating) - previousRating);
 		p.playSound(p.getLocation(),
 				Sound.valueOf(Bukkit.getVersion().contains("1.7") || Bukkit.getVersion().contains("1.8") ? "LEVEL_UP"
 						: "ENTITY_PLAYER_LEVELUP"),
@@ -318,5 +333,49 @@ public class IslandRate extends JavaPlugin {
 
 	public Map<UUID, Long> getCooldowns() {
 		return cooldown;
+	}
+
+	public Map<UUID, Integer> getUserRating() {
+		return userRating;
+	}
+
+	public int getUserRating(UUID id) {
+		return userRating.get(id);
+	}
+
+	public Map<UUID, Double> getUserAverage() {
+		return userAverage;
+	}
+
+	public double getUserAverage(UUID id) {
+		return userAverage.get(id);
+	}
+
+	public Map<UUID, Integer> getUserRaters() {
+		return userRaters;
+	}
+
+	public int getUserRaters(UUID id) {
+		return userRaters.get(id);
+	}
+
+	public int getTotalRatings() {
+		return totalRatings;
+	}
+
+	public void setTotalRatings(int totalRatings) {
+		this.totalRatings = totalRatings;
+	}
+
+	public Map<Integer, UUID> getTopRated() {
+		return topRated;
+	}
+
+	public OfflinePlayer getTopRated(int place) {
+		return Bukkit.getOfflinePlayer(topRated.get(place));
+	}
+
+	public boolean isUsingCache() {
+		return usingCache;
 	}
 }

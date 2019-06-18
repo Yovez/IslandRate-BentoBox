@@ -29,17 +29,16 @@ public class MenuListener implements Listener {
 		this.addon = addon;
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onMenuClick(InventoryClickEvent e) {
-
 		Player p = (Player) e.getWhoClicked();
 		Island island = addon.getIslands().getIslandAt(p.getLocation()).get();
 		if (island == null)
 			return;
 		OfflinePlayer op = Bukkit.getOfflinePlayer(island.getOwner());
 		RateMenu menu = new RateMenu(addon, op);
-		if (!e.getInventory().getTitle().equals(menu.getInv().getTitle())) {
+		if (!(e.getInventory().getHolder() instanceof RateMenu)) {
+			e.setCancelled(true);
 			return;
 		}
 		e.setCancelled(true);
@@ -61,7 +60,6 @@ public class MenuListener implements Listener {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onTopMenuClick(InventoryClickEvent e) {
 		if (e.getInventory() == null)
@@ -78,33 +76,27 @@ public class MenuListener implements Listener {
 			return;
 		if (e.getClickedInventory().getType().equals(InventoryType.CREATIVE))
 			return;
-		TopMenu menu = new TopMenu(addon);
-		if (!e.getInventory().getTitle().equals(menu.getInv().getTitle())) {
+		if (!(e.getInventory().getHolder() instanceof TopMenu)) {
+			e.setCancelled(true);
 			return;
 		}
-		e.setCancelled(true);
 		if (addon.getConfig().getBoolean("top_menu.teleport", false) == true) {
 			SkullMeta meta = (SkullMeta) e.getCurrentItem().getItemMeta();
-			Location loc;
-			if (!Bukkit.getVersion().contains("1.12")) {
-				loc = addon.getIslands()
-						.getIsland(e.getWhoClicked().getWorld(), Bukkit.getOfflinePlayer(meta.getOwner()).getUniqueId())
-						.getSpawnPoint(Environment.NORMAL);
-			} else
-				loc = addon.getIslands().getIsland(e.getWhoClicked().getWorld(), meta.getOwningPlayer().getUniqueId())
-						.getSpawnPoint(Environment.NORMAL);
+			Location loc = addon.getIslands()
+					.getIsland(e.getWhoClicked().getWorld(), meta.getOwningPlayer().getUniqueId())
+					.getSpawnPoint(Environment.NORMAL);
 			if (loc != null) {
 				e.getWhoClicked().teleport(loc);
 			}
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onIslandMenuClick(InventoryClickEvent e) {
 		Player p = (Player) e.getWhoClicked();
 		IslandMenu menu = new IslandMenu(addon, p);
-		if (!e.getInventory().getTitle().equals(menu.getInv().getTitle())) {
+		if (!(e.getInventory().getHolder() instanceof IslandMenu)) {
+			e.setCancelled(true);
 			return;
 		}
 		Island island = addon.getIslands().getIslandAt(p.getLocation()).get();
