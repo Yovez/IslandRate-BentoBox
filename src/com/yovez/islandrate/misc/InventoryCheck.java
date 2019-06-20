@@ -53,6 +53,8 @@ public class InventoryCheck implements Runnable {
 			RateMenu menu = new RateMenu(plugin, p);
 			if (inv.getContents().length > 0)
 				for (ItemStack item : inv.getContents()) {
+					if (item == null)
+						continue;
 					if (item.equals(menu.getHelp())) {
 						inv.remove(menu.getHelp());
 						list.put(p.getUniqueId(), list.get(p.getUniqueId()) + 1);

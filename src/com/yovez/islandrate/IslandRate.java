@@ -22,8 +22,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.yovez.islandrate.api.IslandRateAPI;
 import com.yovez.islandrate.command.RateCommand;
-import com.yovez.islandrate.listener.MenuListener;
 import com.yovez.islandrate.listener.SignListener;
+import com.yovez.islandrate.menu.IslandMenu;
+import com.yovez.islandrate.menu.RateMenu;
+import com.yovez.islandrate.menu.TopMenu;
 import com.yovez.islandrate.misc.CustomConfig;
 import com.yovez.islandrate.misc.InventoryCheck;
 import com.yovez.islandrate.misc.Metrics;
@@ -71,7 +73,9 @@ public class IslandRate extends JavaPlugin {
 		if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
 			new Placeholders(this);
 		}
-		Bukkit.getServer().getPluginManager().registerEvents(new MenuListener(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new RateMenu(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new TopMenu(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new IslandMenu(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new SignListener(this), this);
 		if (plugin.getConfig().getBoolean("use-cache-system", true) == true) {
 			usingCache = true;

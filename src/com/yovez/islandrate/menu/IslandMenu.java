@@ -7,6 +7,9 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -16,8 +19,9 @@ import org.bukkit.inventory.meta.SkullMeta;
 import com.yovez.islandrate.IslandRate;
 
 import net.md_5.bungee.api.ChatColor;
+import world.bentobox.bentobox.database.objects.Island;
 
-public class IslandMenu implements InventoryHolder {
+public class IslandMenu implements InventoryHolder, Listener {
 
 	final IslandRate plugin;
 	private Inventory inv;
@@ -31,8 +35,39 @@ public class IslandMenu implements InventoryHolder {
 	public IslandMenu(IslandRate plugin, Player player) {
 		this.plugin = plugin;
 		this.player = player;
-		inv = Bukkit.createInventory(player, 9, getTitle());
+		inv = Bukkit.createInventory(this, 9, getTitle());
 		items = new HashMap<ItemStack, Integer>();
+	}
+
+	@EventHandler
+	public void onIslandMenuClick(InventoryClickEvent e) {
+		if (e.getClickedInventory() == null)
+			return;
+		if (e.getClickedInventory().getHolder() instanceof IslandMenu) {
+			e.setCancelled(true);
+			Player p = (Player) e.getWhoClicked();
+			IslandMenu menu = new IslandMenu(plugin, p);
+			Island island = plugin.getIslands().getIslandAt(p.getLocation()).get();
+			if (island == null)
+				return;
+			Bukkit.getServer().getScheduler().runTask(plugin, new Runnable() {
+
+				@Override
+				public void run() {
+					if (plugin.getConfig().getBoolean("island_menu.custom", false) == false)
+						menu.openInv();
+					else
+						menu.openCustomInv();
+				}
+
+			});
+			ItemStack item = e.getCurrentItem();
+			if (item.equals(menu.getOptOut())) {
+				plugin.getOptOut().getConfig().set(p.getUniqueId().toString(),
+						!plugin.getOptOut().getConfig().getBoolean(p.getUniqueId().toString(), false));
+				plugin.getOptOut().saveConfig();
+			}
+		}
 	}
 
 	private String getTitle() {

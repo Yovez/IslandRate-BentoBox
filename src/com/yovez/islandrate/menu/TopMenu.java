@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +21,7 @@ import com.yovez.islandrate.IslandRate;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class TopMenu implements InventoryHolder {
+public class TopMenu implements InventoryHolder, Listener {
 
 	final IslandRate plugin;
 	private Inventory inv;
@@ -24,8 +29,26 @@ public class TopMenu implements InventoryHolder {
 
 	public TopMenu(IslandRate plugin) {
 		this.plugin = plugin;
-		inv = Bukkit.createInventory(null, 27, getTitle());
+		inv = Bukkit.createInventory(this, 27, getTitle());
 		items = new ArrayList<ItemStack>();
+	}
+
+	@EventHandler
+	public void onTopMenuClick(InventoryClickEvent e) {
+		if (e.getClickedInventory() == null)
+			return;
+		if (e.getClickedInventory().getHolder() instanceof TopMenu) {
+			e.setCancelled(true);
+			if (plugin.getConfig().getBoolean("top_menu.teleport", false) == true) {
+				SkullMeta meta = (SkullMeta) e.getCurrentItem().getItemMeta();
+				Location loc = plugin.getIslands()
+						.getIsland(e.getWhoClicked().getWorld(), meta.getOwningPlayer().getUniqueId())
+						.getSpawnPoint(Environment.NORMAL);
+				if (loc != null) {
+					e.getWhoClicked().teleport(loc);
+				}
+			}
+		}
 	}
 
 	private String getTitle() {
@@ -86,8 +109,6 @@ public class TopMenu implements InventoryHolder {
 
 		});
 		return inv;
-		// Old method to build inventory...
-
 	}
 
 	public Inventory getInv() {
