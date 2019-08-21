@@ -59,11 +59,11 @@ public class IslandRate extends JavaPlugin {
 	public void onEnable() {
 		plugin = this;
 		saveDefaultConfig();
-		messages = new CustomConfig(this, "messages");
+		messages = new CustomConfig(this, "messages", true);
 		messages.saveDefaultConfig();
-		optOut = new CustomConfig(this, "opt-out");
+		optOut = new CustomConfig(this, "opt-out", true);
 		optOut.saveDefaultConfig();
-		storage = new CustomConfig(this, "storage");
+		storage = new CustomConfig(this, "storage", true);
 		storage.saveDefaultConfig();
 		bentobox = BentoBox.getInstance();
 		askyblock = bentobox.getIslands();
