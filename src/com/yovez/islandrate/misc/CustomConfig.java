@@ -7,43 +7,52 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import com.yovez.islandrate.IslandRate;
+import org.bukkit.plugin.Plugin;
 
 public class CustomConfig {
 
-	private FileConfiguration customConfig;
+	private YamlConfiguration customConfig;
 	private File customConfigFile;
-	private IslandRate plugin;
+	private Plugin plugin;
 	private String configName;
+	private String path;
+	private boolean isResource;
 
-	public CustomConfig(IslandRate plugin, String configName) {
+	public CustomConfig(Plugin plugin, String configName, boolean isResource) {
 		this.plugin = plugin;
 		this.configName = configName;
+		this.isResource = isResource;
+		path = "";
+	}
 
+	public CustomConfig(Plugin plugin, String configName, String path) {
+		this.plugin = plugin;
+		this.configName = configName;
+		this.path = path;
+		isResource = false;
 	}
 
 	public void reloadConfig() {
 		if (customConfigFile == null) {
-			customConfigFile = new File(plugin.getDataFolder(), configName + ".yml");
+			customConfigFile = new File(plugin.getDataFolder() + "/" + path, configName + ".yml");
 		}
 		customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
-
-		Reader defConfigStream = null;
-		try {
-			defConfigStream = new InputStreamReader(plugin.getResource(configName + ".yml"), "UTF8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		if (defConfigStream != null) {
-			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-			customConfig.setDefaults(defConfig);
+		if (isResource == true) {
+			Reader defConfigStream = null;
+			try {
+				defConfigStream = new InputStreamReader(plugin.getResource(configName + ".yml"), "UTF8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			if (defConfigStream != null) {
+				YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+				customConfig.setDefaults(defConfig);
+			}
 		}
 	}
 
-	public FileConfiguration getConfig() {
+	public YamlConfiguration getConfig() {
 		if (customConfig == null) {
 			reloadConfig();
 		}
@@ -51,8 +60,6 @@ public class CustomConfig {
 	}
 
 	public void saveConfig() {
-		if (customConfig == null || customConfigFile == null)
-			return;
 		try {
 			getConfig().save(customConfigFile);
 		} catch (IOException ex) {
@@ -62,11 +69,15 @@ public class CustomConfig {
 
 	public void saveDefaultConfig() {
 		if (customConfigFile == null) {
-			customConfigFile = new File(plugin.getDataFolder(), configName + ".yml");
+			customConfigFile = new File(plugin.getDataFolder() + "/" + path, configName + ".yml");
 		}
 		if (!customConfigFile.exists()) {
 			plugin.saveResource(configName + ".yml", false);
 		}
+	}
+
+	public File getCustomConfigFile() {
+		return customConfigFile;
 	}
 
 }

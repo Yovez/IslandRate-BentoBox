@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -15,7 +21,7 @@ import com.yovez.islandrate.IslandRate;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class TopMenu {
+public class TopMenu implements InventoryHolder, Listener {
 
 	final IslandRate plugin;
 	private Inventory inv;
@@ -23,11 +29,36 @@ public class TopMenu {
 
 	public TopMenu(IslandRate plugin) {
 		this.plugin = plugin;
-		inv = Bukkit.createInventory(null, 27, getTitle());
+		inv = Bukkit.createInventory(this, 27, getTitle());
 		items = new ArrayList<ItemStack>();
 	}
 
+	@EventHandler
+	public void onTopMenuClick(InventoryClickEvent e) {
+		if (e.getClickedInventory() == null)
+			return;
+		if (e.getClickedInventory().getHolder() instanceof TopMenu) {
+			e.setCancelled(true);
+			if (plugin.getConfig().getBoolean("top_menu.teleport", false) == true) {
+				SkullMeta meta = (SkullMeta) e.getCurrentItem().getItemMeta();
+				Location loc = plugin.getIslands()
+						.getIsland(e.getWhoClicked().getWorld(), meta.getOwningPlayer().getUniqueId())
+						.getSpawnPoint(Environment.NORMAL);
+				if (loc != null) {
+					e.getWhoClicked().teleport(loc);
+				}
+			}
+		}
+	}
+
 	private String getTitle() {
+		if (plugin.getMessage("top_menu.title", null, null, 0, 0).length() > 32) {
+			Bukkit.getConsoleSender().sendMessage(new String[] {
+					"§2[IslandRate] §4WARNING: §cAn error occured when opening Top Menu.",
+					"§2[IslandRate] §4Error: §cIsland Menu's Inventory title cannot be longer than 32 characters.",
+					"§2[IslandRate] §cPlease adjust the Title via the config.yml file to be no longer than 32 characters." });
+			return plugin.getMessage("top_menu.title", null, null, 0, 0).substring(0, 32);
+		}
 		return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("top_menu.title"));
 	}
 
@@ -78,8 +109,6 @@ public class TopMenu {
 
 		});
 		return inv;
-		// Old method to build inventory...
-
 	}
 
 	public Inventory getInv() {
@@ -96,6 +125,11 @@ public class TopMenu {
 
 	public void setItems(List<ItemStack> items) {
 		this.items = items;
+	}
+
+	@Override
+	public Inventory getInventory() {
+		return inv;
 	}
 
 }
